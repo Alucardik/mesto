@@ -1,0 +1,12 @@
+.profile__btn {
+  background-size: contain;
+  border: none;
+  padding: 0;
+  outline: none;
+  cursor: pointer;
+  transition: opacity .1s ease-out;
+}
+
+.profile__btn:hover {
+  opacity: .6;
+}
