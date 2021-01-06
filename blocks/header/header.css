@@ -1,3 +1,7 @@
 .header {
+  margin-top: 45px;
 
+  width: calc((880 / 1280) * 100%);
+
+  border-bottom: 1px solid rgba(84, 84, 84, .7);
 }
