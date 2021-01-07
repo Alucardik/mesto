@@ -10,7 +10,20 @@
 @import url(../blocks/content/content.css);
 
 @import url(../blocks/profile/profile.css);
+@import url(../blocks/profile/__social/profile__social.css);
+@import url(../blocks/profile/__avatar/profile__avatar.css);
+@import url(../blocks/profile/__info/profile__info.css);
+@import url(../blocks/profile/__name/profile__name.css);
+@import url(../blocks/profile/__description/profile__description.css);
+@import url(../blocks/profile/__btn/profile__btn.css);
+@import url(../blocks/profile/__btn/_type/profile__btn_type_add.css);
+@import url(../blocks/profile/__btn/_type/profile__btn_type_edit.css);
 
-@import url(../blocks/elements/elements.css);
+@import url(../blocks/gallery/gallery.css);
+@import url(../blocks/gallery/__item/gallery__item.css);
+@import url(../blocks/gallery/__item-image/gallery__image.css);
+@import url(../blocks/gallery/__item-info/gallery__info.css);
+@import url(../blocks/gallery/__item-name/gallery__item-name.css);
+@import url(../blocks/gallery/__like-btn/gallery__like-btn.css);
 
 @import url(../blocks/footer/footer.css);
