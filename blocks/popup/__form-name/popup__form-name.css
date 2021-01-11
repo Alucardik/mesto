@@ -1,0 +1,8 @@
+.popup__form-name {
+  margin: 34px 0 0;
+  width: calc(358 / 440 * 100%);
+
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+}

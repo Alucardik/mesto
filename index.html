@@ -18,11 +18,24 @@
       <div class="profile__social">
         <img src="images/profile__avatar.jpg" alt="Фотография профиля" class="profile__avatar">
         <div class="profile__info">
-          <h1 class="profile__name">Жак-Ив Кусто <button class="profile__btn profile__btn_type_edit"></button></h1>
-          <p class="profile_description">Исследователь океана</p>
+          <h1 class="profile__name">Жак-Ив Кусто</h1>
+          <button class="profile__btn profile__btn_type_edit"></button>
+          <p class="profile__description">Исследователь океана</p>
         </div>
       </div>
       <button class="profile__btn profile__btn_type_add"></button>
+    </section>
+
+    <section class="popup">
+      <div class="popup__container">
+        <button class="popup__close-btn"></button>
+        <form class="popup__form">
+          <h2 class="popup__form-name">Редактировать профиль</h2>
+          <input type="text" class="popup__form-field">
+          <input type="text" class="popup__form-field">
+          <button type="submit" class="popup__submit-btn">Сохранить</button>
+        </form>
+      </div>
     </section>
 
     <section class="gallery">
@@ -68,5 +81,9 @@
   <footer class="footer">
     &copy; 2020 Mesto Russia
   </footer>
+  <script src="blocks/gallery/__like-btn/gallery__like-btn.js"></script>
+  <script src="blocks/popup/popup.js"></script>
+  <script src="blocks/popup/__close-btn/popup__close-btn.js"></script>
+  <script src="blocks/popup/__form/popup__form.js"></script>
 </body>
 </html>

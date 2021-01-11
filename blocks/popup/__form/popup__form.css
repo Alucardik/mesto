@@ -1,0 +1,14 @@
+.popup__form {
+  box-sizing: border-box;
+  width: 100%;
+  /*padding-left: calc(36 / 430 * 100%);*/
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 10px;
+  background-color: #FFF;
+  color: #000000;
+}
