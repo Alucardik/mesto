@@ -1,5 +1,6 @@
 .gallery__like-btn {
-  width: 22px;
+  /* using min-width in order to prevent text from moving button aside */
+  min-width: 22px;
   height: 19px;
   background-size: contain;
   border: none;
