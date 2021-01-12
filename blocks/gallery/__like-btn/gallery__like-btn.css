@@ -14,3 +14,11 @@
 .gallery__like-btn:hover {
   opacity: .5;
 }
+
+@media screen and (max-width: 990px) {
+  .gallery__like-btn {
+    min-width: 33px;
+    height: calc(19px * 1.5);
+    background-size: cover;
+  }
+}
