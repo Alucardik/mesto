@@ -7,8 +7,16 @@
   line-height: 1.14;
 }
 
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 715px) {
   .profile__name {
-    /*font-size: 36px;*/
+    font-size: 30px;
+    line-height: 37px;
+  }
+}
+
+@media screen and (max-width: 570px) {
+  .profile__name {
+    font-size: 27px;
+    line-height: 33px;
   }
 }

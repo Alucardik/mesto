@@ -9,3 +9,16 @@
 .header__logo:hover {
   opacity: .8;
 }
+
+@media screen and (max-width: 715px) {
+  .header__logo {
+    margin-left: 27px;
+    margin-bottom: 32px;
+  }
+}
+
+@media screen and (max-width: 570px) {
+  .header__logo {
+    width: 104px;
+  }
+}

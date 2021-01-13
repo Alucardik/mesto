@@ -2,3 +2,11 @@
   height: 100%;
   display: flex;
 }
+
+@media screen and (max-width: 570px) {
+  .profile__social {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}

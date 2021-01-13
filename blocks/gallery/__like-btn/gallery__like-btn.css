@@ -22,3 +22,10 @@
     background-size: cover;
   }
 }
+
+@media screen and (max-width: 780px) {
+  .gallery__like-btn {
+    min-width: 22px;
+    height: 19px;
+  }
+}
