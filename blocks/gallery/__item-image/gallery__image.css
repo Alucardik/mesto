@@ -1,5 +1,6 @@
 .gallery__item-image {
   width: 100%;
+  object-fit: contain;
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
 }

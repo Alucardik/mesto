@@ -3,3 +3,20 @@
   background-color: #FFF;
   border-radius: 10px;
 }
+
+@media screen and (max-width: 990px) {
+  .gallery__item {
+    max-width: 460px;
+  }
+}
+
+@media screen and (max-width: 570px){
+  .gallery__item {
+    max-width: 610px;
+    margin-bottom: 20px;
+  }
+
+  .gallery__item:last-of-type {
+    margin-bottom: 0;
+  }
+}

@@ -1,5 +1,6 @@
 .gallery__like-btn {
-  width: 22px;
+  /* using min-width in order to prevent text from moving button aside */
+  min-width: 22px;
   height: 19px;
   background-size: contain;
   border: none;
@@ -12,4 +13,19 @@
 
 .gallery__like-btn:hover {
   opacity: .5;
+}
+
+@media screen and (max-width: 990px) {
+  .gallery__like-btn {
+    min-width: 33px;
+    height: calc(19px * 1.5);
+    background-size: cover;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .gallery__like-btn {
+    min-width: 22px;
+    height: 19px;
+  }
 }

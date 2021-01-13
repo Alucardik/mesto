@@ -1,3 +1,9 @@
 .gallery__like-btn_active {
   background: url(../../../../images/like-btn_active.svg);
 }
+
+@media screen and (max-width: 990px) {
+  .gallery__like-btn_active {
+    background-size: cover;
+  }
+}

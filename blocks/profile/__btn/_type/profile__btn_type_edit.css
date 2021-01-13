@@ -4,3 +4,17 @@
   height: 24px;
   background: url(../../../../images/edit-btn.svg);
 }
+
+@media screen and (max-width: 715px) {
+  .profile__btn_type_edit {
+    margin-left: 10px;
+  }
+}
+
+@media screen and (max-width: 570px) {
+  .profile__btn_type_edit {
+    width: 18px;
+    height: 18px;
+    background-size: 18px 18px;
+  }
+}

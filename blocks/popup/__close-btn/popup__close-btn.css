@@ -6,7 +6,6 @@
   width: 32px;
   height: 32px;
 
-  background-size: contain;
   border: none;
   padding: 0;
   outline: none;
@@ -17,4 +16,13 @@
 
 .popup__close-btn:hover {
   opacity: .6;
+}
+
+@media screen and (max-width: 570px) {
+  .popup__close-btn {
+    left: 0;
+    width: 26px;
+    height: 26px;
+    background-size: 26px;
+  }
 }
