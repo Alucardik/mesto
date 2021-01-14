@@ -2,6 +2,11 @@
   margin: 0;
   display: inline-block;
 
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 320px;
+
   font-weight: 500;
   font-size: 42px;
   line-height: 1.14;
@@ -11,6 +16,7 @@
   .profile__name {
     font-size: 30px;
     line-height: 37px;
+    max-width: 225px;
   }
 }
 
@@ -18,5 +24,6 @@
   .profile__name {
     font-size: 27px;
     line-height: 33px;
+    max-width: 310px;
   }
 }
