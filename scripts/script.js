@@ -2,9 +2,15 @@
 
 let editBtn = document.querySelector(".profile__btn_type_edit");
 let popup = document.querySelector(".popup");
+let profName = document.querySelector(".profile__name");
+let profDescr = document.querySelector(".profile__description");
+let formElement = document.querySelector(".popup__form");
+let formFields = formElement.querySelectorAll(".popup__form-field");
 
 editBtn.addEventListener("click", function () {
   popup.classList.add("popup_opened");
+  formFields[0].value = profName.textContent;
+  formFields[1].value = profDescr.textContent;
 })
 
 // popup section script
@@ -14,14 +20,6 @@ let closeBtn = document.querySelector(".popup__close-btn");
 closeBtn.addEventListener("click", function () {
   popup.classList.remove("popup_opened");
 })
-
-let profName = document.querySelector(".profile__name");
-let profDescr = document.querySelector(".profile__description");
-let formElement = document.querySelector(".popup__form");
-let formFields = formElement.querySelectorAll(".popup__form-field");
-
-formFields[0].setAttribute("value", profName.textContent);
-formFields[1].setAttribute("value", profDescr.textContent);
 
 function handleFormSubmit (evt) {
   evt.preventDefault();
