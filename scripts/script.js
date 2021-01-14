@@ -26,6 +26,7 @@ function handleFormSubmit (evt) {
 
   profName.textContent = formFields[0].value;
   profDescr.textContent = formFields[1].value;
+  popup.classList.remove("popup_opened");
 }
 
 formElement.addEventListener('submit', handleFormSubmit);
