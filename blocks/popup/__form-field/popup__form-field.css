@@ -16,6 +16,10 @@
   margin-top: 30px;
 }
 
+.popup__form-field:focus {
+  outline: solid blue 2px;
+}
+
 @media screen and (max-width: 570px) {
   .popup__form-field {
     margin-top: 75px;

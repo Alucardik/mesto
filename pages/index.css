@@ -1,5 +1,5 @@
 @import url(../vendor/normalize.css);
-@import url(../vendor/fonts.css);
+@import url(../fonts/Inter_Web/inter.css);
 @import url(../utility/highlight.css);
 
 @import url(../blocks/page/page.css);
@@ -13,6 +13,7 @@
 @import url(../blocks/profile/__social/profile__social.css);
 @import url(../blocks/profile/__avatar/profile__avatar.css);
 @import url(../blocks/profile/__info/profile__info.css);
+@import url(../blocks/profile/__name-container/profile__name-container.css);
 @import url(../blocks/profile/__name/profile__name.css);
 @import url(../blocks/profile/__description/profile__description.css);
 @import url(../blocks/profile/__btn/profile__btn.css);
@@ -26,6 +27,8 @@
 @import url(../blocks/popup/__form/popup__form.css);
 @import url(../blocks/popup/__form-name/popup__form-name.css);
 @import url(../blocks/popup/__form-field/popup__form-field.css);
+@import url(../blocks/popup/__form-field/_type/popup__form-field_type_name.css);
+@import url(../blocks/popup/__form-field/_type/popup__form-field_type_description.css);
 @import url(../blocks/popup/__submit-btn/popup__submit-btn.css);
 
 @import url(../blocks/gallery/gallery.css);
@@ -37,3 +40,4 @@
 @import url(../blocks/gallery/__like-btn/_active/gallery__like-btn_active.css);
 
 @import url(../blocks/footer/footer.css);
+@import url(../blocks/footer/__text/footer__text.css);
