@@ -38,6 +38,7 @@
 @import url(../blocks/gallery/__item-info/gallery__info.css);
 @import url(../blocks/gallery/__item-name/gallery__item-name.css);
 @import url(../blocks/gallery/__like-btn/gallery__like-btn.css);
+@import url(../blocks/gallery/__del-btn/gallery__del-btn.css);
 @import url(../blocks/gallery/__like-btn/_active/gallery__like-btn_active.css);
 
 @import url(../blocks/footer/footer.css);

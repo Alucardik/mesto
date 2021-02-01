@@ -31,7 +31,7 @@ const galleryItemTemp = document.querySelector("#gallery-item").content;
 const gallery = document.querySelector(".gallery");
 
 function addGalleryItems(...cards) {
-  cards.forEach(function (item) {
+  cards.forEach(item => {
     const newCard = galleryItemTemp.querySelector(".gallery__item").cloneNode(true);
     newCard.querySelector(".gallery__item-image").src = item.link;
     newCard.querySelector(".gallery__item-image").alt = item.name;
@@ -41,6 +41,23 @@ function addGalleryItems(...cards) {
 }
 
 addGalleryItems(...initialCards);
+
+const likeBtns = document.querySelectorAll(".gallery__like-btn");
+
+likeBtns.forEach( item => {
+  item.addEventListener("click", function () {
+    item.classList.toggle("gallery__like-btn_active");
+  });
+});
+
+const delBtns = document.querySelectorAll(".gallery__del-btn");
+
+delBtns.forEach( item => {
+  item.addEventListener("click", function (evt) {
+    const card = item.closest(".gallery__item");
+    card.remove();
+  });
+});
 
 // popup edit-form implementation---------------------------------------------------------------------------------------
 
@@ -77,3 +94,4 @@ function handleFormSubmit (evt) {
 }
 
 formElement.addEventListener('submit', handleFormSubmit);
+
