@@ -36,62 +36,68 @@ function addGalleryItems(...cards) {
     newCard.querySelector(".gallery__item-image").src = item.link;
     newCard.querySelector(".gallery__item-image").alt = item.name;
     newCard.querySelector(".gallery__item-name").textContent = item.name;
+
+    newCard.querySelector(".gallery__del-btn").addEventListener("click", evt =>
+      evt.target.closest(".gallery__item").remove());
+
+    newCard.querySelector(".gallery__like-btn").addEventListener("click", evt =>
+      evt.target.classList.toggle("gallery__like-btn_active"));
+
     gallery.append(newCard);
   });
 }
 
 addGalleryItems(...initialCards);
 
-const likeBtns = document.querySelectorAll(".gallery__like-btn");
-
-likeBtns.forEach( item => {
-  item.addEventListener("click", function () {
-    item.classList.toggle("gallery__like-btn_active");
-  });
-});
-
-const delBtns = document.querySelectorAll(".gallery__del-btn");
-
-delBtns.forEach( item => {
-  item.addEventListener("click", function (evt) {
-    const card = item.closest(".gallery__item");
-    card.remove();
-  });
-});
-
 // popup edit-form implementation---------------------------------------------------------------------------------------
 
 const editBtn = document.querySelector(".profile__btn_type_edit");
-const popup = document.querySelector(".popup");
+const addBtn = document.querySelector(".profile__btn_type_add");
+const popupEdit = document.querySelector("#edit-popup");
+const popupAdd = document.querySelector("#add-popup");
 const profName = document.querySelector(".profile__name");
 const profDescr = document.querySelector(".profile__description");
-const formElement = document.querySelector(".popup__form");
-const formFieldName = formElement.querySelector(".popup__form-field_type_name");
-const formFieldDescr = formElement.querySelector(".popup__form-field_type_description");
+const editFormElement = document.querySelector("#edit-popup .popup__form");
+const addFormElement = document.querySelector("#add-popup .popup__form");
+const editFormFieldName = editFormElement.querySelector(".popup__form-field_type_name");
+const editFormFieldDescr = editFormElement.querySelector(".popup__form-field_type_description");
+const addFormFieldName = addFormElement.querySelector(".popup__form-field_type_name");
+const addFormFieldDescr = addFormElement.querySelector(".popup__form-field_type_description");
 
-function openPopup () {
-  popup.classList.add("popup_opened");
-  formFieldName.value = profName.textContent;
-  formFieldDescr.value = profDescr.textContent;
+function openPopup (evt) {
+  if (evt.target === editBtn) {
+    popupEdit.classList.add("popup_opened");
+    editFormFieldName.value = profName.textContent;
+    editFormFieldDescr.value = profDescr.textContent;
+  } else {
+    popupAdd.classList.add("popup_opened");
+  }
+
 }
 
-function closePopup () {
-  popup.classList.remove("popup_opened");
+function closePopup (evt) {
+  evt.target.closest(".popup").classList.remove("popup_opened");
 }
 
 editBtn.addEventListener("click", openPopup);
+addBtn.addEventListener("click", openPopup);
 
-const closeBtn = document.querySelector(".popup__close-btn");
+const closeBtns = document.querySelectorAll(".popup__close-btn");
 
-closeBtn.addEventListener("click", closePopup);
+closeBtns.forEach(item => item.addEventListener("click", closePopup));
 
-function handleFormSubmit (evt) {
+function handleEditFormSubmit (evt) {
   evt.preventDefault();
+  if (evt.target === editFormElement) {
+    profName.textContent = editFormFieldName.value;
+    profDescr.textContent = editFormFieldDescr.value;
+  } else {
+    addGalleryItems({name: addFormFieldName.value, link: addFormFieldDescr.value});
 
-  profName.textContent = formFieldName.value;
-  profDescr.textContent = formFieldDescr.value;
-  closePopup();
+  }
+  closePopup(evt);
 }
 
-formElement.addEventListener('submit', handleFormSubmit);
+editFormElement.addEventListener("submit", handleEditFormSubmit);
+addFormElement.addEventListener("submit", handleEditFormSubmit);
 

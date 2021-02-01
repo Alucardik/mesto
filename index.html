@@ -36,7 +36,7 @@
     <p class="footer__text">&copy; 2020 Mesto Russia</p>
   </footer>
 
-  <div class="popup">
+  <div id="edit-popup" class="popup">
     <div class="popup__container">
       <button type="button" class="popup__close-btn"></button>
       <form name="profile-info" class="popup__form">
@@ -46,6 +46,20 @@
         <input name="profile-description" type="text" placeholder="Пару слов о себе"
                class="popup__form-field popup__form-field_type_description">
         <button type="submit" class="popup__submit-btn">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="add-popup" class="popup">
+    <div class="popup__container">
+      <button type="button" class="popup__close-btn"></button>
+      <form name="profile-info" class="popup__form">
+        <h2 class="popup__form-name">Новое место</h2>
+        <input name="profile-name" type="text" placeholder="Название"
+               class="popup__form-field popup__form-field_type_name" required>
+        <input name="profile-description" type="text" placeholder="Ссылка на картинку"
+               class="popup__form-field popup__form-field_type_description">
+        <button type="submit" class="popup__submit-btn">Создать</button>
       </form>
     </div>
   </div>
