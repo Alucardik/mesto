@@ -1,0 +1,11 @@
+.gallery__image-container {
+  /*positioning at the beginning of the card*/
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: calc(282 / 361 * 100%);
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}

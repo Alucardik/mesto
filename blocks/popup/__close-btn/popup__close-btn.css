@@ -12,6 +12,7 @@
   cursor: pointer;
   transition: opacity .1s ease-out;
   background: url(../../../images/close-btn.svg);
+  z-index: 12;
 }
 
 .popup__close-btn:hover {

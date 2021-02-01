@@ -1,0 +1,20 @@
+.gallery__del-btn {
+  /* using min-width in order to prevent text from moving button aside */
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  width: 18px;
+  height: 19.3px;
+  background-size: contain;
+  border: none;
+  padding: 0;
+  outline: none;
+  cursor: pointer;
+  transition: opacity .1s ease-out;
+  background: url(../../../images/del-button.svg);
+  z-index: 2;
+}
+
+.gallery__del-btn:hover {
+  opacity: .5;
+}
