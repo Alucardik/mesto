@@ -1,5 +1,8 @@
 .gallery__item-info {
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: calc(246 / 282 * 100%);
   margin: 25px 15px 31px 21px;
   display: flex;
   justify-content: space-between;

@@ -1,4 +1,9 @@
 .gallery__item {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  /*setting padding to make responsive cards*/
+  padding-top: calc(361 / 282 * 100%);
   max-width: 282px;
   background-color: #FFF;
   border-radius: 10px;
