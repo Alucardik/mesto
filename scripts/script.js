@@ -28,7 +28,16 @@ const initialCards = [
 ];
 
 const galleryItemTemp = document.querySelector("#gallery-item").content;
+const popupItemView = document.querySelector("#image-view");
 const gallery = document.querySelector(".gallery");
+
+function viewGalleryItem(evt) {
+  popupItemView.querySelector(".popup__image").src = evt.target.nextElementSibling.src;
+  popupItemView.querySelector(".popup__image").alt = evt.target.nextElementSibling.alt;
+  popupItemView.classList.add("popup_opened");
+  popupItemView.querySelector(".popup__close-btn").addEventListener("click", () =>
+    popupItemView.classList.remove("popup_opened"));
+}
 
 function addGalleryItems(...cards) {
   cards.forEach(item => {
@@ -36,6 +45,8 @@ function addGalleryItems(...cards) {
     newCard.querySelector(".gallery__item-image").src = item.link;
     newCard.querySelector(".gallery__item-image").alt = item.name;
     newCard.querySelector(".gallery__item-name").textContent = item.name;
+
+    newCard.querySelector(".gallery__image-container").addEventListener("click", viewGalleryItem);
 
     newCard.querySelector(".gallery__del-btn").addEventListener("click", evt =>
       evt.target.closest(".gallery__item").remove());
@@ -72,7 +83,6 @@ function openPopup (evt) {
   } else {
     popupAdd.classList.add("popup_opened");
   }
-
 }
 
 function closePopup (evt) {

@@ -1,0 +1,11 @@
+.popup__close-btn_type_itemView {
+  left: 40px;
+  bottom: 5px;
+}
+
+@media screen and (max-width: 570px) {
+  .popup__close-btn_type_itemView {
+    left: 0;
+    bottom: 13px;
+  }
+}
