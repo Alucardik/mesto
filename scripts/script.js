@@ -43,13 +43,13 @@ function addGalleryItems(...cards) {
     newCard.querySelector(".gallery__like-btn").addEventListener("click", evt =>
       evt.target.classList.toggle("gallery__like-btn_active"));
 
-    gallery.append(newCard);
+    gallery.prepend(newCard);
   });
 }
 
 addGalleryItems(...initialCards);
 
-// popup edit-form implementation---------------------------------------------------------------------------------------
+// popup forms implementation---------------------------------------------------------------------------------------
 
 const editBtn = document.querySelector(".profile__btn_type_edit");
 const addBtn = document.querySelector(".profile__btn_type_add");
@@ -100,4 +100,3 @@ function handleEditFormSubmit (evt) {
 
 editFormElement.addEventListener("submit", handleEditFormSubmit);
 addFormElement.addEventListener("submit", handleEditFormSubmit);
-

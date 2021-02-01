@@ -12,7 +12,7 @@
   cursor: pointer;
   transition: opacity .1s ease-out;
   background: url(../../../images/del-button.svg);
-  z-index: 1;
+  z-index: 2;
 }
 
 .gallery__del-btn:hover {

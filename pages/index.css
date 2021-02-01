@@ -34,6 +34,7 @@
 @import url(../blocks/gallery/gallery.css);
 @import url(../blocks/gallery/__item/gallery__item.css);
 @import url(../blocks/gallery/__image-container/gallery__image-container.css);
+@import url(../blocks/gallery/__overlay/gallery__overlay.css);
 @import url(../blocks/gallery/__item-image/gallery__image.css);
 @import url(../blocks/gallery/__item-info/gallery__info.css);
 @import url(../blocks/gallery/__item-name/gallery__item-name.css);
