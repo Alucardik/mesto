@@ -34,6 +34,7 @@ const gallery = document.querySelector(".gallery");
 function viewGalleryItem(evt) {
   popupItemView.querySelector(".popup__image").src = evt.target.nextElementSibling.src;
   popupItemView.querySelector(".popup__image").alt = evt.target.nextElementSibling.alt;
+  popupItemView.querySelector(".popup__image-text").textContent = evt.target.nextElementSibling.alt;
   popupItemView.classList.add("popup_opened");
   popupItemView.querySelector(".popup__close-btn").addEventListener("click", () =>
     popupItemView.classList.remove("popup_opened"));
