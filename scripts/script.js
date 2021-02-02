@@ -29,33 +29,38 @@ const initialCards = [
 
 const galleryItemTemp = document.querySelector("#gallery-item").content;
 const popupItemView = document.querySelector("#image-view");
+const popupViewImage = popupItemView.querySelector(".popup__image");
+const popupViewText = popupItemView.querySelector(".popup__image-text");
 const gallery = document.querySelector(".gallery");
 
-function viewGalleryItem(evt) {
-  popupItemView.querySelector(".popup__image").src = evt.target.nextElementSibling.src;
-  popupItemView.querySelector(".popup__image").alt = evt.target.nextElementSibling.alt;
-  popupItemView.querySelector(".popup__image-text").textContent = evt.target.nextElementSibling.alt;
+function viewGalleryItem(item) {
+  popupViewImage.src = item.link;
+  popupViewImage.alt = item.name;
+  popupViewText.textContent = item.name;
   popupItemView.classList.add("popup_opened");
-  popupItemView.querySelector(".popup__close-btn").addEventListener("click", () =>
-    popupItemView.classList.remove("popup_opened"));
+}
+
+function createCard(cardInfo) {
+  const newCard = galleryItemTemp.querySelector(".gallery__item").cloneNode(true);
+  newCard.querySelector(".gallery__item-image").src = cardInfo.link;
+  newCard.querySelector(".gallery__item-image").alt = cardInfo.name;
+  newCard.querySelector(".gallery__item-name").textContent = cardInfo.name;
+
+  newCard.querySelector(".gallery__image-container").addEventListener("click", () =>
+    viewGalleryItem(cardInfo));
+
+  newCard.querySelector(".gallery__del-btn").addEventListener("click", evt =>
+    evt.target.closest(".gallery__item").remove());
+
+  newCard.querySelector(".gallery__like-btn").addEventListener("click", evt =>
+    evt.target.classList.toggle("gallery__like-btn_active"));
+
+  return newCard;
 }
 
 function addGalleryItems(...cards) {
   cards.forEach(item => {
-    const newCard = galleryItemTemp.querySelector(".gallery__item").cloneNode(true);
-    newCard.querySelector(".gallery__item-image").src = item.link;
-    newCard.querySelector(".gallery__item-image").alt = item.name;
-    newCard.querySelector(".gallery__item-name").textContent = item.name;
-
-    newCard.querySelector(".gallery__image-container").addEventListener("click", viewGalleryItem);
-
-    newCard.querySelector(".gallery__del-btn").addEventListener("click", evt =>
-      evt.target.closest(".gallery__item").remove());
-
-    newCard.querySelector(".gallery__like-btn").addEventListener("click", evt =>
-      evt.target.classList.toggle("gallery__like-btn_active"));
-
-    gallery.prepend(newCard);
+    gallery.prepend(createCard(item));
   });
 }
 
@@ -76,38 +81,46 @@ const editFormFieldDescr = editFormElement.querySelector(".popup__form-field_typ
 const addFormFieldName = addFormElement.querySelector(".popup__form-field_type_name");
 const addFormFieldDescr = addFormElement.querySelector(".popup__form-field_type_description");
 
-function openPopup (evt) {
-  if (evt.target === editBtn) {
-    popupEdit.classList.add("popup_opened");
-    editFormFieldName.value = profName.textContent;
-    editFormFieldDescr.value = profDescr.textContent;
-  } else {
-    popupAdd.classList.add("popup_opened");
-  }
+function openPopup (popup) {
+  popup.classList.add("popup_opened");
 }
 
-function closePopup (evt) {
-  evt.target.closest(".popup").classList.remove("popup_opened");
+function closePopup (popup) {
+  popup.classList.remove("popup_opened");
 }
 
-editBtn.addEventListener("click", openPopup);
-addBtn.addEventListener("click", openPopup);
+editBtn.addEventListener("click", evt => {
+  editFormFieldName.value = profName.textContent;
+  editFormFieldDescr.value = profDescr.textContent;
+  openPopup(popupEdit);
+});
+
+addBtn.addEventListener("click", evt => openPopup(popupAdd));
 
 const closeBtns = document.querySelectorAll(".popup__close-btn");
 
-closeBtns.forEach(item => item.addEventListener("click", closePopup));
+closeBtns.forEach(item => item.addEventListener("click", evt => {
+  closePopup(evt.target.closest(".popup"));
+}));
 
-function handleEditFormSubmit (evt) {
+function handleEditFormSubmit(evt) {
   evt.preventDefault();
-  if (evt.target === editFormElement) {
-    profName.textContent = editFormFieldName.value;
-    profDescr.textContent = editFormFieldDescr.value;
-  } else {
-    addGalleryItems({name: addFormFieldName.value, link: addFormFieldDescr.value});
 
-  }
-  closePopup(evt);
+  profName.textContent = editFormFieldName.value;
+  profDescr.textContent = editFormFieldDescr.value;
+  closePopup(popupEdit);
+}
+
+function handleAddFormSubmit(evt) {
+  evt.preventDefault();
+
+  addGalleryItems({name: addFormFieldName.value, link: addFormFieldDescr.value});
+
+  // refreshing form values for a new card
+  addFormFieldName.value = "";
+  addFormFieldDescr.value = "";
+  closePopup(popupAdd);
 }
 
 editFormElement.addEventListener("submit", handleEditFormSubmit);
-addFormElement.addEventListener("submit", handleEditFormSubmit);
+addFormElement.addEventListener("submit", handleAddFormSubmit);
