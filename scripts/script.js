@@ -37,7 +37,7 @@ function viewGalleryItem(item) {
   popupViewImage.src = item.link;
   popupViewImage.alt = item.name;
   popupViewText.textContent = item.name;
-  popupItemView.classList.add("popup_opened");
+  openPopup(popupItemView);
 }
 
 function createCard(cardInfo) {
