@@ -42,8 +42,9 @@ function viewGalleryItem(item) {
 
 function createCard(cardInfo) {
   const newCard = galleryItemTemp.querySelector(".gallery__item").cloneNode(true);
-  newCard.querySelector(".gallery__item-image").src = cardInfo.link;
-  newCard.querySelector(".gallery__item-image").alt = cardInfo.name;
+  const newCardImage = newCard.querySelector(".gallery__item-image");
+  newCardImage.src = cardInfo.link;
+  newCardImage.alt = cardInfo.name;
   newCard.querySelector(".gallery__item-name").textContent = cardInfo.name;
 
   newCard.querySelector(".gallery__image-container").addEventListener("click", () =>
@@ -83,26 +84,58 @@ const addFormFieldDescr = addFormElement.querySelector(".popup__form-input_type_
 
 function openPopup(popup) {
   popup.classList.add("popup_opened");
+
+  // adding a global listener to catch keyboard events for popups, cause they don't produce those themselves
+  document.addEventListener("keydown", handleOverlayKeypress);
 }
 
 function closePopup(popup) {
   popup.classList.remove("popup_opened");
+  document.removeEventListener("keydown", handleOverlayKeypress);
 }
 
 editBtn.addEventListener("click", () => {
   editFormFieldName.value = profName.textContent;
   editFormFieldDescr.value = profDescr.textContent;
+
+  hideErrorMsg(editFormElement, editFormFieldName, {
+    inputErrorClass: 'popup__form-input_invalid',
+    errorClass: 'popup__form-input-error',
+    errorClassActive: 'popup__form-input-error_active'
+  });
+
+  hideErrorMsg(editFormElement, editFormFieldDescr, {
+    inputErrorClass: 'popup__form-input_invalid',
+    errorClass: 'popup__form-input-error',
+    errorClassActive: 'popup__form-input-error_active'
+  });
+
   openPopup(popupEdit);
 });
 
 addBtn.addEventListener("click", () => {
   addFormElement.reset();
-  hideErrorMsg(addFormElement, addFormFieldName);
-  hideErrorMsg(addFormElement, addFormFieldDescr);
+
+  toggleSubmitBtnState(Array.from(addFormElement.querySelectorAll(".popup__form-input")),
+    addFormElement.querySelector(".popup__submit-btn"),
+    {inactiveButtonClass: 'popup__submit-btn_inactive'});
+
+  hideErrorMsg(addFormElement, addFormFieldName, {
+    inputErrorClass: 'popup__form-input_invalid',
+    errorClass: 'popup__form-input-error',
+    errorClassActive: 'popup__form-input-error_active'
+  });
+
+  hideErrorMsg(addFormElement, addFormFieldDescr, {
+    inputErrorClass: 'popup__form-input_invalid',
+    errorClass: 'popup__form-input-error',
+    errorClassActive: 'popup__form-input-error_active'
+  });
+
   openPopup(popupAdd);
 });
 
-function overlaysClickHandling(evt) {
+function handleOverlayClick(evt) {
   if (evt.target.classList.contains("popup__close-btn")) {
     closePopup(evt.target.closest(".popup"));
   } else if (!evt.target.classList.contains("popup__container")) {
@@ -110,34 +143,19 @@ function overlaysClickHandling(evt) {
   }
 }
 
-function isPopupOpened(popups) {
-  for (let i = 0; i < popups.length; ++i) {
-    if (popups[i].classList.contains("popup_opened")) {
-      return popups[i];
-    }
-  }
-
-  return 0;
-}
-
 const overlays = document.querySelectorAll(".popup");
 
 overlays.forEach(overlay => {
-  overlay.addEventListener("click", overlaysClickHandling);
+  overlay.addEventListener("click", handleOverlayClick);
 });
 
-function overlaysKeyHandling(evt) {
-  console.log(evt);
+function handleOverlayKeypress(evt) {
   if (evt.key === "Escape") {
-    const curPopup = isPopupOpened(overlays);
+    const curPopup = document.querySelector(".popup_opened");
     if (curPopup)
       closePopup(curPopup);
   }
 }
-
-// adding a global listener to catch keyboard events for popups, cause they don't produce those themselves
-
-document.addEventListener("keydown", overlaysKeyHandling);
 
 function handleEditFormSubmit(evt) {
   evt.preventDefault();
