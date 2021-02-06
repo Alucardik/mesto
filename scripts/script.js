@@ -95,7 +95,12 @@ editBtn.addEventListener("click", () => {
   openPopup(popupEdit);
 });
 
-addBtn.addEventListener("click", () => openPopup(popupAdd));
+addBtn.addEventListener("click", () => {
+  addFormElement.reset();
+  hideErrorMsg(addFormElement, addFormFieldName);
+  hideErrorMsg(addFormElement, addFormFieldDescr);
+  openPopup(popupAdd);
+});
 
 const closeBtns = document.querySelectorAll(".popup__close-btn");
 
