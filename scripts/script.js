@@ -66,7 +66,7 @@ function addGalleryItems(...cards) {
 
 addGalleryItems(...initialCards);
 
-// popup forms implementation---------------------------------------------------------------------------------------
+// popup forms implementation-------------------------------------------------------------------------------------------
 
 const editBtn = document.querySelector(".profile__btn_type_edit");
 const addBtn = document.querySelector(".profile__btn_type_add");
@@ -89,13 +89,13 @@ function closePopup (popup) {
   popup.classList.remove("popup_opened");
 }
 
-editBtn.addEventListener("click", evt => {
+editBtn.addEventListener("click", () => {
   editFormFieldName.value = profName.textContent;
   editFormFieldDescr.value = profDescr.textContent;
   openPopup(popupEdit);
 });
 
-addBtn.addEventListener("click", evt => openPopup(popupAdd));
+addBtn.addEventListener("click", () => openPopup(popupAdd));
 
 const closeBtns = document.querySelectorAll(".popup__close-btn");
 
@@ -124,3 +124,38 @@ function handleAddFormSubmit(evt) {
 
 editFormElement.addEventListener("submit", handleEditFormSubmit);
 addFormElement.addEventListener("submit", handleAddFormSubmit);
+
+// form validation------------------------------------------------------------------------------------------------------
+
+function hasInvalidInput(inputList) {
+   return inputList.some(field => {
+    return !field.validity.valid;
+  });
+}
+
+function toggleSubmitBtnState(inputList, buttonElement) {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add("popup__submit-btn_inactive");
+  } else {
+    buttonElement.classList.remove("popup__submit-btn_inactive");
+  }
+}
+
+function setEventListeners(formElement) {
+  const inputList = Array.from(formElement.querySelectorAll(".popup__form-field"));
+  const submButton = formElement.querySelector(".popup__submit-btn");
+  toggleSubmitBtnState(inputList, submButton);
+  inputList.forEach(inpElement => {
+    inpElement.addEventListener("input", () => {
+      toggleSubmitBtnState(inputList, submButton);
+    });
+  });
+
+}
+
+function enableFormValidation() {
+  setEventListeners(editFormElement);
+  setEventListeners(addFormElement);
+}
+
+enableFormValidation();
