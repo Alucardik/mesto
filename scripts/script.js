@@ -76,10 +76,10 @@ const profName = document.querySelector(".profile__name");
 const profDescr = document.querySelector(".profile__description");
 const editFormElement = document.querySelector("#edit-popup .popup__form");
 const addFormElement = document.querySelector("#add-popup .popup__form");
-const editFormFieldName = editFormElement.querySelector(".popup__form-field_type_name");
-const editFormFieldDescr = editFormElement.querySelector(".popup__form-field_type_description");
-const addFormFieldName = addFormElement.querySelector(".popup__form-field_type_name");
-const addFormFieldDescr = addFormElement.querySelector(".popup__form-field_type_description");
+const editFormFieldName = editFormElement.querySelector(".popup__form-input_type_name");
+const editFormFieldDescr = editFormElement.querySelector(".popup__form-input_type_description");
+const addFormFieldName = addFormElement.querySelector(".popup__form-input_type_name");
+const addFormFieldDescr = addFormElement.querySelector(".popup__form-input_type_description");
 
 function openPopup(popup) {
   popup.classList.add("popup_opened");
