@@ -81,11 +81,11 @@ const editFormFieldDescr = editFormElement.querySelector(".popup__form-field_typ
 const addFormFieldName = addFormElement.querySelector(".popup__form-field_type_name");
 const addFormFieldDescr = addFormElement.querySelector(".popup__form-field_type_description");
 
-function openPopup (popup) {
+function openPopup(popup) {
   popup.classList.add("popup_opened");
 }
 
-function closePopup (popup) {
+function closePopup(popup) {
   popup.classList.remove("popup_opened");
 }
 
@@ -102,11 +102,42 @@ addBtn.addEventListener("click", () => {
   openPopup(popupAdd);
 });
 
-const closeBtns = document.querySelectorAll(".popup__close-btn");
+function overlaysClickHandling(evt) {
+  if (evt.target.classList.contains("popup__close-btn")) {
+    closePopup(evt.target.closest(".popup"));
+  } else if (!evt.target.classList.contains("popup__container")) {
+    closePopup(evt.target);
+  }
+}
 
-closeBtns.forEach(item => item.addEventListener("click", evt => {
-  closePopup(evt.target.closest(".popup"));
-}));
+function isPopupOpened(popups) {
+  for (let i = 0; i < popups.length; ++i) {
+    if (popups[i].classList.contains("popup_opened")) {
+      return popups[i];
+    }
+  }
+
+  return 0;
+}
+
+const overlays = document.querySelectorAll(".popup");
+
+overlays.forEach(overlay => {
+  overlay.addEventListener("click", overlaysClickHandling);
+});
+
+function overlaysKeyHandling(evt) {
+  console.log(evt);
+  if (evt.key === "Escape") {
+    const curPopup = isPopupOpened(overlays);
+    if (curPopup)
+      closePopup(curPopup);
+  }
+}
+
+// adding a global listener to catch keyboard events for popups, cause they don't produce those themselves
+
+document.addEventListener("keydown", overlaysKeyHandling);
 
 function handleEditFormSubmit(evt) {
   evt.preventDefault();
