@@ -1,4 +1,5 @@
-// gallery item addition implementation---------------------------------------------------------------------------------
+import Card from "./Card.js"
+import FormValidator from "./FormValidator.js"
 
 const initialCards = [
   {
@@ -27,41 +28,12 @@ const initialCards = [
   }
 ];
 
-const galleryItemTemp = document.querySelector("#gallery-item").content;
-const popupItemView = document.querySelector("#image-view");
-const popupViewImage = popupItemView.querySelector(".popup__image");
-const popupViewText = popupItemView.querySelector(".popup__image-text");
 const gallery = document.querySelector(".gallery");
-
-function viewGalleryItem(item) {
-  popupViewImage.src = item.link;
-  popupViewImage.alt = item.name;
-  popupViewText.textContent = item.name;
-  openPopup(popupItemView);
-}
-
-function createCard(cardInfo) {
-  const newCard = galleryItemTemp.querySelector(".gallery__item").cloneNode(true);
-  const newCardImage = newCard.querySelector(".gallery__item-image");
-  newCardImage.src = cardInfo.link;
-  newCardImage.alt = cardInfo.name;
-  newCard.querySelector(".gallery__item-name").textContent = cardInfo.name;
-
-  newCard.querySelector(".gallery__image-container").addEventListener("click", () =>
-    viewGalleryItem(cardInfo));
-
-  newCard.querySelector(".gallery__del-btn").addEventListener("click", evt =>
-    evt.target.closest(".gallery__item").remove());
-
-  newCard.querySelector(".gallery__like-btn").addEventListener("click", evt =>
-    evt.target.classList.toggle("gallery__like-btn_active"));
-
-  return newCard;
-}
 
 function addGalleryItems(...cards) {
   cards.forEach(item => {
-    gallery.prepend(createCard(item));
+    gallery.prepend(new Card(item, "#gallery-item", "gallery",
+      "#image-view", "popup__image", openPopup).createCard());
   });
 }
 
@@ -94,10 +66,21 @@ function closePopup(popup) {
   document.removeEventListener("keydown", handleOverlayKeypress);
 }
 
+// using old hideErrorMsg function to hide previous errors on popup opening
+// in order not to create another FormValidator class instance
+
+function hideErrorMsg(formElement, inputElement, config) {
+  const errorMsg = formElement.querySelector(`.${config.errorClass}_type_${inputElement.name}`);
+  errorMsg.classList.remove(config.errorClassActive);
+  errorMsg.textContent = "";
+  inputElement.classList.remove(config.inputErrorClass);
+}
+
 editBtn.addEventListener("click", () => {
   editFormFieldName.value = profName.textContent;
   editFormFieldDescr.value = profDescr.textContent;
 
+  // hiding previous form's error messages
   hideErrorMsg(editFormElement, editFormFieldName, {
     inputErrorClass: 'popup__form-input_invalid',
     errorClass: 'popup__form-input-error',
@@ -116,10 +99,12 @@ editBtn.addEventListener("click", () => {
 addBtn.addEventListener("click", () => {
   addFormElement.reset();
 
-  toggleSubmitBtnState(Array.from(addFormElement.querySelectorAll(".popup__form-input")),
-    addFormElement.querySelector(".popup__submit-btn"),
-    {inactiveButtonClass: 'popup__submit-btn_inactive'});
+  // disabling "add image" button by default
+  const submButton =  addFormElement.querySelector(".popup__submit-btn");
+  submButton.classList.add("popup__submit-btn_inactive");
+  submButton.disabled = true;
 
+  // hiding previous form's error messages
   hideErrorMsg(addFormElement, addFormFieldName, {
     inputErrorClass: 'popup__form-input_invalid',
     errorClass: 'popup__form-input-error',
@@ -178,3 +163,22 @@ function handleAddFormSubmit(evt) {
 
 editFormElement.addEventListener("submit", handleEditFormSubmit);
 addFormElement.addEventListener("submit", handleAddFormSubmit);
+
+// enabling form validation using FormValidator class
+
+function enableFormValidation(config) {
+  const formList = Array.from(document.querySelectorAll(`.${config.formSelector}`));
+  formList.forEach(formElement => {
+    new FormValidator(formElement, config).enableValidation();
+  });
+}
+
+enableFormValidation({
+  formSelector: 'popup__form',
+  inputSelector: 'popup__form-input',
+  submitButtonSelector: 'popup__submit-btn',
+  inactiveButtonClass: 'popup__submit-btn_inactive',
+  inputErrorClass: 'popup__form-input_invalid',
+  errorClass: 'popup__form-input-error',
+  errorClassActive: 'popup__form-input-error_active'
+});
