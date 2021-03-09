@@ -1,66 +1,4 @@
-// gallery item addition implementation---------------------------------------------------------------------------------
-
-const popupItemView = document.querySelector("#image-view");
-const popupViewImage = popupItemView.querySelector(".popup__image");
-const popupViewText = popupItemView.querySelector(".popup__image-text");
-
-class Card {
-// private section
-  _createTemp() {
-    this._temp = document.querySelector(this._tempSelector).content.
-    querySelector(`.${this._contPrefix}__item`).cloneNode(true);
-    this._tempImage = this._temp.querySelector(`.${this._contPrefix}__item-image`);
-  }
-
-  _fillInfo() {
-    this._createTemp();
-    this._tempImage.src = this._link;
-    this._tempImage.alt = this._name;
-    this._temp.querySelector(`.${this._contPrefix}__item-name`).textContent = this._name;
-  }
-
-// eventListeners subsection
-  _viewCardImage() {
-    popupViewImage.src = this._link;
-    popupViewImage.alt = this._name;
-    popupViewText.textContent = this._name;
-    openPopup(popupItemView);
-  }
-
-  _delCard(evt) {
-    evt.target.closest(`.${this._contPrefix}__item`).remove();
-  }
-
-  _likeCard(evt) {
-    evt.target.classList.toggle(`${this._contPrefix}__like-btn_active`);
-  }
-
-  _addEvListeners() {
-    this._temp.querySelector(`.${this._contPrefix}__image-container`).addEventListener("click", () =>
-      this._viewCardImage());
-
-    this._temp.querySelector(`.${this._contPrefix}__del-btn`).addEventListener("click", evt =>
-      this._delCard(evt));
-
-    this._temp.querySelector(`.${this._contPrefix}__like-btn`).addEventListener("click", evt =>
-      this._likeCard(evt));
-  }
-
-// public section
-  // passing one prefix for all template elements to constructor
-  constructor(cardInfo, cardTempSelector, cardTempContentSelPrefix) {
-    this._name = cardInfo.name;
-    this._link = cardInfo.link;
-    this._tempSelector = cardTempSelector;
-    this._contPrefix = cardTempContentSelPrefix;
-  }
-
-  createCard() {
-    this._fillInfo();
-    this._addEvListeners();
-    return this._temp;
-  }
-}
+import Card from "./Card.js"
 
 const initialCards = [
   {
@@ -93,7 +31,8 @@ const gallery = document.querySelector(".gallery");
 
 function addGalleryItems(...cards) {
   cards.forEach(item => {
-    gallery.prepend(new Card(item, "#gallery-item", "gallery").createCard());
+    gallery.prepend(new Card(item, "#gallery-item", "gallery",
+      "#image-view", "popup__image", openPopup).createCard());
   });
 }
 
