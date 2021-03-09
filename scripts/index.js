@@ -1,4 +1,5 @@
 import Card from "./Card.js"
+import FormValidator from "./FormValidator.js"
 
 const initialCards = [
   {
@@ -69,17 +70,17 @@ editBtn.addEventListener("click", () => {
   editFormFieldName.value = profName.textContent;
   editFormFieldDescr.value = profDescr.textContent;
 
-  hideErrorMsg(editFormElement, editFormFieldName, {
-    inputErrorClass: 'popup__form-input_invalid',
-    errorClass: 'popup__form-input-error',
-    errorClassActive: 'popup__form-input-error_active'
-  });
-
-  hideErrorMsg(editFormElement, editFormFieldDescr, {
-    inputErrorClass: 'popup__form-input_invalid',
-    errorClass: 'popup__form-input-error',
-    errorClassActive: 'popup__form-input-error_active'
-  });
+  // hideErrorMsg(editFormElement, editFormFieldName, {
+  //   inputErrorClass: 'popup__form-input_invalid',
+  //   errorClass: 'popup__form-input-error',
+  //   errorClassActive: 'popup__form-input-error_active'
+  // });
+  //
+  // hideErrorMsg(editFormElement, editFormFieldDescr, {
+  //   inputErrorClass: 'popup__form-input_invalid',
+  //   errorClass: 'popup__form-input-error',
+  //   errorClassActive: 'popup__form-input-error_active'
+  // });
 
   openPopup(popupEdit);
 });
@@ -87,21 +88,21 @@ editBtn.addEventListener("click", () => {
 addBtn.addEventListener("click", () => {
   addFormElement.reset();
 
-  toggleSubmitBtnState(Array.from(addFormElement.querySelectorAll(".popup__form-input")),
-    addFormElement.querySelector(".popup__submit-btn"),
-    {inactiveButtonClass: 'popup__submit-btn_inactive'});
-
-  hideErrorMsg(addFormElement, addFormFieldName, {
-    inputErrorClass: 'popup__form-input_invalid',
-    errorClass: 'popup__form-input-error',
-    errorClassActive: 'popup__form-input-error_active'
-  });
-
-  hideErrorMsg(addFormElement, addFormFieldDescr, {
-    inputErrorClass: 'popup__form-input_invalid',
-    errorClass: 'popup__form-input-error',
-    errorClassActive: 'popup__form-input-error_active'
-  });
+  // toggleSubmitBtnState(Array.from(addFormElement.querySelectorAll(".popup__form-input")),
+  //   addFormElement.querySelector(".popup__submit-btn"),
+  //   {inactiveButtonClass: 'popup__submit-btn_inactive'});
+  //
+  // hideErrorMsg(addFormElement, addFormFieldName, {
+  //   inputErrorClass: 'popup__form-input_invalid',
+  //   errorClass: 'popup__form-input-error',
+  //   errorClassActive: 'popup__form-input-error_active'
+  // });
+  //
+  // hideErrorMsg(addFormElement, addFormFieldDescr, {
+  //   inputErrorClass: 'popup__form-input_invalid',
+  //   errorClass: 'popup__form-input-error',
+  //   errorClassActive: 'popup__form-input-error_active'
+  // });
 
   openPopup(popupAdd);
 });
@@ -149,3 +150,22 @@ function handleAddFormSubmit(evt) {
 
 editFormElement.addEventListener("submit", handleEditFormSubmit);
 addFormElement.addEventListener("submit", handleAddFormSubmit);
+
+// enabling form validation using FormValidator class
+
+function enableFormValidation(config) {
+  const formList = Array.from(document.querySelectorAll(`.${config.formSelector}`));
+  formList.forEach(formElement => {
+    new FormValidator(formElement, config).enableValidation();
+  });
+}
+
+enableFormValidation({
+  formSelector: 'popup__form',
+  inputSelector: 'popup__form-input',
+  submitButtonSelector: 'popup__submit-btn',
+  inactiveButtonClass: 'popup__submit-btn_inactive',
+  inputErrorClass: 'popup__form-input_invalid',
+  errorClass: 'popup__form-input-error',
+  errorClassActive: 'popup__form-input-error_active'
+});
