@@ -66,21 +66,32 @@ function closePopup(popup) {
   document.removeEventListener("keydown", handleOverlayKeypress);
 }
 
+// using old hideErrorMsg function to hide previous errors on popup opening
+// in order not to create another FormValidator class instance
+
+function hideErrorMsg(formElement, inputElement, config) {
+  const errorMsg = formElement.querySelector(`.${config.errorClass}_type_${inputElement.name}`);
+  errorMsg.classList.remove(config.errorClassActive);
+  errorMsg.textContent = "";
+  inputElement.classList.remove(config.inputErrorClass);
+}
+
 editBtn.addEventListener("click", () => {
   editFormFieldName.value = profName.textContent;
   editFormFieldDescr.value = profDescr.textContent;
 
-  // hideErrorMsg(editFormElement, editFormFieldName, {
-  //   inputErrorClass: 'popup__form-input_invalid',
-  //   errorClass: 'popup__form-input-error',
-  //   errorClassActive: 'popup__form-input-error_active'
-  // });
-  //
-  // hideErrorMsg(editFormElement, editFormFieldDescr, {
-  //   inputErrorClass: 'popup__form-input_invalid',
-  //   errorClass: 'popup__form-input-error',
-  //   errorClassActive: 'popup__form-input-error_active'
-  // });
+  // hiding previous form's error messages
+  hideErrorMsg(editFormElement, editFormFieldName, {
+    inputErrorClass: 'popup__form-input_invalid',
+    errorClass: 'popup__form-input-error',
+    errorClassActive: 'popup__form-input-error_active'
+  });
+
+  hideErrorMsg(editFormElement, editFormFieldDescr, {
+    inputErrorClass: 'popup__form-input_invalid',
+    errorClass: 'popup__form-input-error',
+    errorClassActive: 'popup__form-input-error_active'
+  });
 
   openPopup(popupEdit);
 });
@@ -88,21 +99,23 @@ editBtn.addEventListener("click", () => {
 addBtn.addEventListener("click", () => {
   addFormElement.reset();
 
-  // toggleSubmitBtnState(Array.from(addFormElement.querySelectorAll(".popup__form-input")),
-  //   addFormElement.querySelector(".popup__submit-btn"),
-  //   {inactiveButtonClass: 'popup__submit-btn_inactive'});
-  //
-  // hideErrorMsg(addFormElement, addFormFieldName, {
-  //   inputErrorClass: 'popup__form-input_invalid',
-  //   errorClass: 'popup__form-input-error',
-  //   errorClassActive: 'popup__form-input-error_active'
-  // });
-  //
-  // hideErrorMsg(addFormElement, addFormFieldDescr, {
-  //   inputErrorClass: 'popup__form-input_invalid',
-  //   errorClass: 'popup__form-input-error',
-  //   errorClassActive: 'popup__form-input-error_active'
-  // });
+  // disabling "add image" button by default
+  const submButton =  addFormElement.querySelector(".popup__submit-btn");
+  submButton.classList.add("popup__submit-btn_inactive");
+  submButton.disabled = true;
+
+  // hiding previous form's error messages
+  hideErrorMsg(addFormElement, addFormFieldName, {
+    inputErrorClass: 'popup__form-input_invalid',
+    errorClass: 'popup__form-input-error',
+    errorClassActive: 'popup__form-input-error_active'
+  });
+
+  hideErrorMsg(addFormElement, addFormFieldDescr, {
+    inputErrorClass: 'popup__form-input_invalid',
+    errorClass: 'popup__form-input-error',
+    errorClassActive: 'popup__form-input-error_active'
+  });
 
   openPopup(popupAdd);
 });
