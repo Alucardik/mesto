@@ -27,41 +27,71 @@ const initialCards = [
   }
 ];
 
-const galleryItemTemp = document.querySelector("#gallery-item").content;
 const popupItemView = document.querySelector("#image-view");
 const popupViewImage = popupItemView.querySelector(".popup__image");
 const popupViewText = popupItemView.querySelector(".popup__image-text");
 const gallery = document.querySelector(".gallery");
 
-function viewGalleryItem(item) {
-  popupViewImage.src = item.link;
-  popupViewImage.alt = item.name;
-  popupViewText.textContent = item.name;
-  openPopup(popupItemView);
-}
+class Card {
+// private section
+  _createTemp() {
+    this._temp = document.querySelector(`#${this._tempSelector}`).content.
+    querySelector(`.${this._contSelector}`).cloneNode(true);
+    this._tempImage = this._temp.querySelector(`.${this._contSelector}-image`);
+  }
 
-function createCard(cardInfo) {
-  const newCard = galleryItemTemp.querySelector(".gallery__item").cloneNode(true);
-  const newCardImage = newCard.querySelector(".gallery__item-image");
-  newCardImage.src = cardInfo.link;
-  newCardImage.alt = cardInfo.name;
-  newCard.querySelector(".gallery__item-name").textContent = cardInfo.name;
+  _fillInfo() {
+    this._createTemp();
+    this._tempImage.src = this._link;
+    this._tempImage.alt = this._name;
+    this._temp.querySelector(`.${this._contSelector}-name`).textContent = this._name;
+  }
 
-  newCard.querySelector(".gallery__image-container").addEventListener("click", () =>
-    viewGalleryItem(cardInfo));
+// eventListeners subsection
+  _viewCardImage() {
+    popupViewImage.src = this._link;
+    popupViewImage.alt = this._name;
+    popupViewText.textContent = this._name;
+    openPopup(popupItemView);
+  }
 
-  newCard.querySelector(".gallery__del-btn").addEventListener("click", evt =>
-    evt.target.closest(".gallery__item").remove());
+  _delCard(evt) {
+    evt.target.closest(`.${this._contSelector}`).remove();
+  }
 
-  newCard.querySelector(".gallery__like-btn").addEventListener("click", evt =>
-    evt.target.classList.toggle("gallery__like-btn_active"));
+  _likeCard(evt) {
+    evt.target.classList.toggle("gallery__like-btn_active");
+  }
 
-  return newCard;
+  _addEvListeners() {
+    this._temp.querySelector(".gallery__image-container").addEventListener("click", () =>
+      this._viewCardImage());
+
+    this._temp.querySelector(`.gallery__del-btn`).addEventListener("click", evt =>
+      this._delCard(evt));
+
+    this._temp.querySelector(".gallery__like-btn").addEventListener("click", evt =>
+      this._likeCard(evt));
+  }
+
+// public section
+  constructor(cardInfo, cardTempSelector, contSelector) {
+    this._name = cardInfo.name;
+    this._link = cardInfo.link;
+    this._tempSelector = cardTempSelector;
+    this._contSelector = contSelector;
+  }
+
+  createCard() {
+    this._fillInfo();
+    this._addEvListeners();
+    return this._temp;
+  }
 }
 
 function addGalleryItems(...cards) {
   cards.forEach(item => {
-    gallery.prepend(createCard(item));
+    gallery.prepend(new Card(item, "gallery-item", "gallery__item").createCard());
   });
 }
 
