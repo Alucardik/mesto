@@ -6,8 +6,6 @@ export default class Card {
     this._temp = document.querySelector(this._tempSelector).content.
     querySelector(`.${this._contPrefix}__item`).cloneNode(true);
     this._tempImage = this._temp.querySelector(`.${this._contPrefix}__item-image`);
-    this._popupTemp = document.querySelector(this._popupTempSelector);
-    this._popupImg = this._popupTemp.querySelector(`.${this._popupContSelector}`);
   }
 
   _fillInfo() {
@@ -18,13 +16,6 @@ export default class Card {
   }
 
 // eventListeners subsection
-  _viewCardImage() {
-    this._popupImg.src = this._link;
-    this._popupImg.alt = this._name;
-    this._popupTemp.querySelector(`.${this._popupContSelector}-text`).textContent = this._name;
-    this._popupOpenFunc(this._popupTemp);
-  }
-
   _delCard(evt) {
     evt.target.closest(`.${this._contPrefix}__item`).remove();
   }
@@ -35,7 +26,7 @@ export default class Card {
 
   _addEvListeners() {
     this._temp.querySelector(`.${this._contPrefix}__image-container`).addEventListener("click", () =>
-      this._viewCardImage());
+      this._imgView({name: this._name, link: this._link}));
 
     this._temp.querySelector(`.${this._contPrefix}__del-btn`).addEventListener("click", evt =>
       this._delCard(evt));
@@ -46,15 +37,13 @@ export default class Card {
 
 // public section
   // passing one prefix for all template elements to constructor
-  constructor(cardInfo, cardTempSelector, cardTempContentSelPrefix,
-              imgPopupTempSelector, imgPopupContSelector, popupFunc) {
+  constructor(cardInfo, cardTempSelector,
+              cardTempContentSelPrefix, cardImgViewFunc) {
     this._name = cardInfo.name;
     this._link = cardInfo.link;
     this._tempSelector = cardTempSelector;
     this._contPrefix = cardTempContentSelPrefix;
-    this._popupTempSelector = imgPopupTempSelector;
-    this._popupContSelector = imgPopupContSelector;
-    this._popupOpenFunc = popupFunc;
+    this._imgView = cardImgViewFunc;
   }
 
   createCard() {

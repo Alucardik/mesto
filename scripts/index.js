@@ -28,18 +28,43 @@ const initialCards = [
   }
 ];
 
+// handling imagePopup opening
+
+const popupItemView = document.querySelector("#image-view");
+const popupViewImage = popupItemView.querySelector(".popup__image");
+const popupViewText = popupItemView.querySelector(".popup__image-text");
+
+function viewGalleryItem(item) {
+  popupViewImage.src = item.link;
+  popupViewImage.alt = item.name;
+  popupViewText.textContent = item.name;
+  openPopup(popupItemView);
+}
+
+// adding mock gallery to site
+
 const gallery = document.querySelector(".gallery");
 
 function addGalleryItems(...cards) {
   cards.forEach(item => {
-    gallery.prepend(new Card(item, "#gallery-item", "gallery",
-      "#image-view", "popup__image", openPopup).createCard());
+    gallery.prepend(new Card(item, "#gallery-item",
+      "gallery", viewGalleryItem).createCard());
   });
 }
 
 addGalleryItems(...initialCards);
 
 // popup forms implementation-------------------------------------------------------------------------------------------
+
+const config = {
+  formSelector: 'popup__form',
+  inputSelector: 'popup__form-input',
+  submitButtonSelector: 'popup__submit-btn',
+  inactiveButtonClass: 'popup__submit-btn_inactive',
+  inputErrorClass: 'popup__form-input_invalid',
+  errorClass: 'popup__form-input-error',
+  errorClassActive: 'popup__form-input-error_active'
+};
 
 const editBtn = document.querySelector(".profile__btn_type_edit");
 const addBtn = document.querySelector(".profile__btn_type_add");
@@ -81,17 +106,9 @@ editBtn.addEventListener("click", () => {
   editFormFieldDescr.value = profDescr.textContent;
 
   // hiding previous form's error messages
-  hideErrorMsg(editFormElement, editFormFieldName, {
-    inputErrorClass: 'popup__form-input_invalid',
-    errorClass: 'popup__form-input-error',
-    errorClassActive: 'popup__form-input-error_active'
-  });
+  hideErrorMsg(editFormElement, editFormFieldName, config);
 
-  hideErrorMsg(editFormElement, editFormFieldDescr, {
-    inputErrorClass: 'popup__form-input_invalid',
-    errorClass: 'popup__form-input-error',
-    errorClassActive: 'popup__form-input-error_active'
-  });
+  hideErrorMsg(editFormElement, editFormFieldDescr, config);
 
   openPopup(popupEdit);
 });
@@ -105,17 +122,9 @@ addBtn.addEventListener("click", () => {
   submButton.disabled = true;
 
   // hiding previous form's error messages
-  hideErrorMsg(addFormElement, addFormFieldName, {
-    inputErrorClass: 'popup__form-input_invalid',
-    errorClass: 'popup__form-input-error',
-    errorClassActive: 'popup__form-input-error_active'
-  });
+  hideErrorMsg(addFormElement, addFormFieldName, config);
 
-  hideErrorMsg(addFormElement, addFormFieldDescr, {
-    inputErrorClass: 'popup__form-input_invalid',
-    errorClass: 'popup__form-input-error',
-    errorClassActive: 'popup__form-input-error_active'
-  });
+  hideErrorMsg(addFormElement, addFormFieldDescr, config);
 
   openPopup(popupAdd);
 });
@@ -155,9 +164,7 @@ function handleAddFormSubmit(evt) {
 
   addGalleryItems({name: addFormFieldName.value, link: addFormFieldDescr.value});
 
-  // refreshing form values for a new card
-  addFormFieldName.value = "";
-  addFormFieldDescr.value = "";
+  // form's fields are reset in addBtn eventListener
   closePopup(popupAdd);
 }
 
@@ -173,12 +180,4 @@ function enableFormValidation(config) {
   });
 }
 
-enableFormValidation({
-  formSelector: 'popup__form',
-  inputSelector: 'popup__form-input',
-  submitButtonSelector: 'popup__submit-btn',
-  inactiveButtonClass: 'popup__submit-btn_inactive',
-  inputErrorClass: 'popup__form-input_invalid',
-  errorClass: 'popup__form-input-error',
-  errorClassActive: 'popup__form-input-error_active'
-});
+enableFormValidation(config);
