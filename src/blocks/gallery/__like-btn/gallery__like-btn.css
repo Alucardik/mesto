@@ -8,7 +8,7 @@
   outline: none;
   cursor: pointer;
   transition: opacity .1s ease-out;
-  background: url(../../../images/like-btn.svg);
+  background: url(../../../../images/like-btn.svg);
 }
 
 .gallery__like-btn:hover {
