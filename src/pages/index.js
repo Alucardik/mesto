@@ -1,5 +1,6 @@
 import Section from "../components/Section.js";
 import Card from "../components/Card.js";
+import UserInfo from "../components/UserInfo.js";
 import FormValidator from "../components/FormValidator.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
@@ -85,28 +86,29 @@ const config = {
 
 const editBtn = document.querySelector(".profile__btn_type_edit");
 const addBtn = document.querySelector(".profile__btn_type_add");
-const popupEdit = document.querySelector("#edit-popup");
-const popupAdd = document.querySelector("#add-popup");
-const profName = document.querySelector(".profile__name");
-const profDescr = document.querySelector(".profile__description");
+// const popupEdit = document.querySelector("#edit-popup");
+// const popupAdd = document.querySelector("#add-popup");
+// const profName = document.querySelector(".profile__name");
+// const profDescr = document.querySelector(".profile__description");
 const editFormElement = document.querySelector("#edit-popup .popup__form");
-const addFormElement = document.querySelector("#add-popup .popup__form");
+// const addFormElement = document.querySelector("#add-popup .popup__form");
 const editFormFieldName = editFormElement.querySelector(".popup__form-input_type_name");
 const editFormFieldDescr = editFormElement.querySelector(".popup__form-input_type_description");
-const addFormFieldName = addFormElement.querySelector(".popup__form-input_type_name");
-const addFormFieldDescr = addFormElement.querySelector(".popup__form-input_type_description");
+// const addFormFieldName = addFormElement.querySelector(".popup__form-input_type_name");
+// const addFormFieldDescr = addFormElement.querySelector(".popup__form-input_type_description");
 
-function openPopup(popup) {
-  popup.classList.add("popup_opened");
+// function openPopup(popup) {
+//   popup.classList.add("popup_opened");
+//
+//   // adding a global listener to catch keyboard events for popups, cause they don't produce those themselves
+//   document.addEventListener("keydown", handleOverlayKeypress);
+// }
 
-  // adding a global listener to catch keyboard events for popups, cause they don't produce those themselves
-  document.addEventListener("keydown", handleOverlayKeypress);
-}
+// function closePopup(popup) {
+//   popup.classList.remove("popup_opened");
+//   document.removeEventListener("keydown", handleOverlayKeypress);
+// }
 
-function closePopup(popup) {
-  popup.classList.remove("popup_opened");
-  document.removeEventListener("keydown", handleOverlayKeypress);
-}
 
 // using old hideErrorMsg function to hide previous errors on popup opening
 // in order not to create another FormValidator class instance
@@ -117,6 +119,7 @@ function hideErrorMsg(formElement, inputElement, config) {
   errorMsg.textContent = "";
   inputElement.classList.remove(config.inputErrorClass);
 }
+
 
 // addBtn.addEventListener("click", () => {
 //   addFormElement.reset();
@@ -148,33 +151,34 @@ function hideErrorMsg(formElement, inputElement, config) {
 //   overlay.addEventListener("click", handleOverlayClick);
 // });
 
-function handleOverlayKeypress(evt) {
-  if (evt.key === "Escape") {
-    const curPopup = document.querySelector(".popup_opened");
-    if (curPopup)
-      closePopup(curPopup);
-  }
-}
+// function handleOverlayKeypress(evt) {
+//   if (evt.key === "Escape") {
+//     const curPopup = document.querySelector(".popup_opened");
+//     if (curPopup)
+//       closePopup(curPopup);
+//   }
+// }
 
-function handleEditFormSubmit(evt) {
-  evt.preventDefault();
+// function handleEditFormSubmit(evt) {
+//   evt.preventDefault();
+//
+//   profName.textContent = editFormFieldName.value;
+//   profDescr.textContent = editFormFieldDescr.value;
+//   closePopup(popupEdit);
+// }
 
-  profName.textContent = editFormFieldName.value;
-  profDescr.textContent = editFormFieldDescr.value;
-  closePopup(popupEdit);
-}
+// function handleAddFormSubmit(evt) {
+//   evt.preventDefault();
+//
+//   addGalleryItems({name: addFormFieldName.value, link: addFormFieldDescr.value});
+//
+//   // form's fields are reset in addBtn eventListener
+//   closePopup(popupAdd);
+// }
 
-function handleAddFormSubmit(evt) {
-  evt.preventDefault();
-
-  addGalleryItems({name: addFormFieldName.value, link: addFormFieldDescr.value});
-
-  // form's fields are reset in addBtn eventListener
-  closePopup(popupAdd);
-}
-
-editFormElement.addEventListener("submit", handleEditFormSubmit);
+// editFormElement.addEventListener("submit", handleEditFormSubmit);
 // addFormElement.addEventListener("submit", handleAddFormSubmit);
+
 
 // enabling form validation using FormValidator class
 
@@ -186,12 +190,19 @@ function enableFormValidation(config) {
 }
 
 enableFormValidation(config);
+
+const profile = new UserInfo({
+  usrNameSel: ".profile__name",
+  usrStatusSel: ".profile__description"
+});
+
 const editFormPopup = new PopupWithForm("#edit-popup", {
     formName: "profile-info",
     handleSubm: (evt) => {
       evt.preventDefault();
-      profName.textContent = editFormFieldName.value;
-      profDescr.textContent = editFormFieldDescr.value;
+      const formValues = addFormPopup._getInputValues();
+      profile.setUserInfo({ usrName: formValues[0],
+        usrStatus: formValues[1]});
       editFormPopup.close();
     }
   },
@@ -205,7 +216,13 @@ const addFormPopup = new PopupWithForm("#add-popup", {
     formName: "add-card",
     handleSubm: (evt) => {
       evt.preventDefault();
-      addGalleryItems({name: addFormFieldName.value, link: addFormFieldDescr.value});
+      const formValues = addFormPopup._getInputValues();
+      const curItem = {name: formValues[0],
+        link: formValues[1]};
+      const imgPopup = new PopupWithImage("#image-view", curItem);
+      imgPopup.setEventListeners();
+      mockGallery.addItem(new Card(curItem, "#gallery-item",
+        "gallery", imgPopup.open.bind(imgPopup)).createCard());
       addFormPopup.close();
     }
   },
@@ -220,7 +237,8 @@ editFormPopup.setEventListeners();
 
 addBtn.addEventListener("click", addFormPopup.open.bind(addFormPopup));
 editBtn.addEventListener("click", () => {
-  editFormFieldName.value = profName.textContent;
-  editFormFieldDescr.value = profDescr.textContent;
+  const curInfo = profile.getUserInfo();
+  editFormFieldName.value = curInfo.usrName;
+  editFormFieldDescr.value = curInfo.usrStatus;
   editFormPopup.open();
 });
