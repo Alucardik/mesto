@@ -25,8 +25,7 @@ export default class Card {
   }
 
   _addEvListeners() {
-    this._temp.querySelector(`.${this._contPrefix}__image-container`).addEventListener("click", () =>
-      this._imgView({name: this._name, link: this._link}));
+    this._temp.querySelector(`.${this._contPrefix}__image-container`).addEventListener("click", this._imgView);
 
     this._temp.querySelector(`.${this._contPrefix}__del-btn`).addEventListener("click", evt =>
       this._delCard(evt));
@@ -38,12 +37,12 @@ export default class Card {
 // public section
   // passing one prefix for all template elements to constructor
   constructor(cardInfo, cardTempSelector,
-              cardTempContentSelPrefix, cardImgViewFunc) {
+              cardTempContentSelPrefix, handleCardClick) {
     this._name = cardInfo.name;
     this._link = cardInfo.link;
     this._tempSelector = cardTempSelector;
     this._contPrefix = cardTempContentSelPrefix;
-    this._imgView = cardImgViewFunc;
+    this._imgView = handleCardClick;
   }
 
   createCard() {

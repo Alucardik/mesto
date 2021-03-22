@@ -1,5 +1,6 @@
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
+import PopupWithImage from "../components/PopupWithImage.js";
 import "./index.css";
 
 const initialCards = [
@@ -48,8 +49,10 @@ const gallery = document.querySelector(".gallery");
 
 function addGalleryItems(...cards) {
   cards.forEach(item => {
+    const imgPopup = new PopupWithImage("#image-view", item);
+    imgPopup.setEventListeners();
     gallery.prepend(new Card(item, "#gallery-item",
-      "gallery", viewGalleryItem).createCard());
+      "gallery", imgPopup.open.bind(imgPopup)).createCard());
   });
 }
 
