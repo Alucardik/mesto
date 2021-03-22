@@ -1,3 +1,4 @@
+import Section from "../components/Section.js";
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import PopupWithImage from "../components/PopupWithImage.js";
@@ -31,37 +32,44 @@ const initialCards = [
   }
 ];
 
-// handling imagePopup opening
+// adding mock gallery to the page
 
-const popupItemView = document.querySelector("#image-view");
-const popupViewImage = popupItemView.querySelector(".popup__image");
-const popupViewText = popupItemView.querySelector(".popup__image-text");
-
-function viewGalleryItem(item) {
-  popupViewImage.src = item.link;
-  popupViewImage.alt = item.name;
-  popupViewText.textContent = item.name;
-  openPopup(popupItemView);
-}
-
-// adding mock gallery to page
-
-const gallery = document.querySelector(".gallery");
-
-function addGalleryItems(...cards) {
-  cards.forEach(item => {
+const mockGallery = new Section({items: initialCards,
+  renderer: item => {
     // Right now a new instance of PopupWithImage is created for each gallery item,
     // though they all refer to one popup with only altering image's src and name.
     // Maybe there should be only one instance of this class and
     // "open" method should take parameters instead of constructor?
     const imgPopup = new PopupWithImage("#image-view", item);
     imgPopup.setEventListeners();
-    gallery.prepend(new Card(item, "#gallery-item",
+    mockGallery.addItem(new Card(item, "#gallery-item",
       "gallery", imgPopup.open.bind(imgPopup)).createCard());
-  });
-}
+  }}, ".gallery" );
 
-addGalleryItems(...initialCards);
+mockGallery.renderItems();
+
+// const popupItemView = document.querySelector("#image-view");
+// const popupViewImage = popupItemView.querySelector(".popup__image");
+// const popupViewText = popupItemView.querySelector(".popup__image-text");
+
+// function viewGalleryItem(item) {
+//   popupViewImage.src = item.link;
+//   popupViewImage.alt = item.name;
+//   popupViewText.textContent = item.name;
+//   openPopup(popupItemView);
+// }
+//
+// // adding mock gallery to page
+//
+// const gallery = document.querySelector(".gallery");
+//
+// function addGalleryItems(...cards) {
+//   cards.forEach(item => {
+//
+//   });
+// }
+//
+// addGalleryItems(...initialCards);
 
 // popup forms implementation-------------------------------------------------------------------------------------------
 
