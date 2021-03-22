@@ -11,8 +11,7 @@ export default class Popup {
     if (evt.target.classList.contains(`popup__close-btn`)) {
       // this._popupObj = evt.target.closest(`.popup`)
       this.close();
-    } else if (!evt.target.classList.contains(`popup__container`)) {
-      // this._popupObj = evt.target;
+    } else if (!evt.target.closest(".popup__container")) {
       this.close();
     }
   }
@@ -20,7 +19,6 @@ export default class Popup {
   constructor(popupSelector) {
     // this._popupSelector = popupSelector;
     this._popupObj = document.querySelector(popupSelector);
-    console.log("super con-My obj:\t", this._popupObj);
   }
 
   // TODO check binds
@@ -29,7 +27,6 @@ export default class Popup {
   }
 
   open() {
-    console.log("super open-My obj:\t", this._popupObj);
     this._popupObj.classList.add(`popup_opened`);
     // adding a global listener to catch keyboard events for popups, cause they don't produce those themselves
     document.addEventListener("keydown", this._handleEscClose.bind(this));

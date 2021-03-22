@@ -1,6 +1,7 @@
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWithForm from "../components/PopupWithForm.js";
 import "./index.css";
 
 const initialCards = [
@@ -43,12 +44,16 @@ function viewGalleryItem(item) {
   openPopup(popupItemView);
 }
 
-// adding mock gallery to site
+// adding mock gallery to page
 
 const gallery = document.querySelector(".gallery");
 
 function addGalleryItems(...cards) {
   cards.forEach(item => {
+    // Right now a new instance of PopupWithImage is created for each gallery item,
+    // though they all refer to one popup with only altering image's src and name.
+    // Maybe there should be only one instance of this class and
+    // "open" method should take parameters instead of constructor?
     const imgPopup = new PopupWithImage("#image-view", item);
     imgPopup.setEventListeners();
     gallery.prepend(new Card(item, "#gallery-item",
@@ -105,47 +110,35 @@ function hideErrorMsg(formElement, inputElement, config) {
   inputElement.classList.remove(config.inputErrorClass);
 }
 
-editBtn.addEventListener("click", () => {
-  editFormFieldName.value = profName.textContent;
-  editFormFieldDescr.value = profDescr.textContent;
+// addBtn.addEventListener("click", () => {
+//   addFormElement.reset();
+//
+//   // disabling "add image" button by default
+//   const submButton =  addFormElement.querySelector(".popup__submit-btn");
+//   submButton.classList.add("popup__submit-btn_inactive");
+//   submButton.disabled = true;
+//
+//   // hiding previous form's error messages
+//   hideErrorMsg(addFormElement, addFormFieldName, config);
+//
+//   hideErrorMsg(addFormElement, addFormFieldDescr, config);
+//
+//   openPopup(popupAdd);
+// });
 
-  // hiding previous form's error messages
-  hideErrorMsg(editFormElement, editFormFieldName, config);
+// function handleOverlayClick(evt) {
+//   if (evt.target.classList.contains("popup__close-btn")) {
+//     closePopup(evt.target.closest(".popup"));
+//   } else if (!evt.target.classList.contains("popup__container")) {
+//     closePopup(evt.target);
+//   }
+// }
 
-  hideErrorMsg(editFormElement, editFormFieldDescr, config);
+// const overlays = document.querySelectorAll(".popup");
 
-  openPopup(popupEdit);
-});
-
-addBtn.addEventListener("click", () => {
-  addFormElement.reset();
-
-  // disabling "add image" button by default
-  const submButton =  addFormElement.querySelector(".popup__submit-btn");
-  submButton.classList.add("popup__submit-btn_inactive");
-  submButton.disabled = true;
-
-  // hiding previous form's error messages
-  hideErrorMsg(addFormElement, addFormFieldName, config);
-
-  hideErrorMsg(addFormElement, addFormFieldDescr, config);
-
-  openPopup(popupAdd);
-});
-
-function handleOverlayClick(evt) {
-  if (evt.target.classList.contains("popup__close-btn")) {
-    closePopup(evt.target.closest(".popup"));
-  } else if (!evt.target.classList.contains("popup__container")) {
-    closePopup(evt.target);
-  }
-}
-
-const overlays = document.querySelectorAll(".popup");
-
-overlays.forEach(overlay => {
-  overlay.addEventListener("click", handleOverlayClick);
-});
+// overlays.forEach(overlay => {
+//   overlay.addEventListener("click", handleOverlayClick);
+// });
 
 function handleOverlayKeypress(evt) {
   if (evt.key === "Escape") {
@@ -173,7 +166,7 @@ function handleAddFormSubmit(evt) {
 }
 
 editFormElement.addEventListener("submit", handleEditFormSubmit);
-addFormElement.addEventListener("submit", handleAddFormSubmit);
+// addFormElement.addEventListener("submit", handleAddFormSubmit);
 
 // enabling form validation using FormValidator class
 
@@ -185,3 +178,41 @@ function enableFormValidation(config) {
 }
 
 enableFormValidation(config);
+const editFormPopup = new PopupWithForm("#edit-popup", {
+    formName: "profile-info",
+    handleSubm: (evt) => {
+      evt.preventDefault();
+      profName.textContent = editFormFieldName.value;
+      profDescr.textContent = editFormFieldDescr.value;
+      editFormPopup.close();
+    }
+  },
+  {
+    hideErrorMsg,
+    config
+  }
+);
+
+const addFormPopup = new PopupWithForm("#add-popup", {
+    formName: "add-card",
+    handleSubm: (evt) => {
+      evt.preventDefault();
+      addGalleryItems({name: addFormFieldName.value, link: addFormFieldDescr.value});
+      addFormPopup.close();
+    }
+  },
+  {
+    hideErrorMsg,
+    config
+  }
+);
+
+addFormPopup.setEventListeners();
+editFormPopup.setEventListeners();
+
+addBtn.addEventListener("click", addFormPopup.open.bind(addFormPopup));
+editBtn.addEventListener("click", () => {
+  editFormFieldName.value = profName.textContent;
+  editFormFieldDescr.value = profDescr.textContent;
+  editFormPopup.open();
+});
