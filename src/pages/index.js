@@ -12,6 +12,7 @@ import "./index.css";
 
 const imgPopup = new PopupWithImage("#image-view");
 imgPopup.setEventListeners();
+
 const mockGallery = new Section({items: data.initialCards,
   renderer: item => {
     mockGallery.addItem(new Card(item, "#gallery-item",
