@@ -1,7 +1,14 @@
-// gallery item addition implementation---------------------------------------------------------------------------------
-
 export default class Card {
-// private section
+  // passing one prefix for all template elements to constructor
+  constructor(cardInfo, cardTempSelector,
+              cardTempContentSelPrefix, handleCardClick) {
+    this._name = cardInfo.name;
+    this._link = cardInfo.link;
+    this._tempSelector = cardTempSelector;
+    this._contPrefix = cardTempContentSelPrefix;
+    this._imgView = handleCardClick;
+  }
+
   _createTemp() {
     this._temp = document.querySelector(this._tempSelector).content.
     querySelector(`.${this._contPrefix}__item`).cloneNode(true);
@@ -15,7 +22,6 @@ export default class Card {
     this._temp.querySelector(`.${this._contPrefix}__item-name`).textContent = this._name;
   }
 
-// eventListeners subsection
   _delCard(evt) {
     evt.target.closest(`.${this._contPrefix}__item`).remove();
   }
@@ -34,17 +40,6 @@ export default class Card {
 
     this._temp.querySelector(`.${this._contPrefix}__like-btn`).addEventListener("click", evt =>
       this._likeCard(evt));
-  }
-
-// public section
-  // passing one prefix for all template elements to constructor
-  constructor(cardInfo, cardTempSelector,
-              cardTempContentSelPrefix, handleCardClick) {
-    this._name = cardInfo.name;
-    this._link = cardInfo.link;
-    this._tempSelector = cardTempSelector;
-    this._contPrefix = cardTempContentSelPrefix;
-    this._imgView = handleCardClick;
   }
 
   createCard() {

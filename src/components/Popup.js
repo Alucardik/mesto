@@ -1,4 +1,10 @@
 export default class Popup {
+  constructor(popupSelector) {
+    this._popupObj = document.querySelector(popupSelector);
+    this._handleEscClose = this._handleEscClose.bind(this);
+    this._handleClickClose = this._handleClickClose.bind(this);
+  }
+
   _handleEscClose(evt) {
     if (evt.key === "Escape") {
       if (document.querySelector(`.popup_opened`))
@@ -12,12 +18,6 @@ export default class Popup {
     } else if (!evt.target.closest(".popup__container")) {
       this.close();
     }
-  }
-
-  constructor(popupSelector) {
-    this._popupObj = document.querySelector(popupSelector);
-    this._handleEscClose = this._handleEscClose.bind(this);
-    this._handleClickClose = this._handleClickClose.bind(this);
   }
 
   setEventListeners() {

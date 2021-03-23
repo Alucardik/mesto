@@ -1,7 +1,8 @@
-// form validation------------------------------------------------------------------------------------------------------
-
 export default class FormValidator {
-// private section
+  constructor(form, config) {
+    this._config = config;
+    this._formElement = form;
+  }
 
   _showErrorMsg(inputElement) {
     const errorMsg = this._formElement.querySelector(`.${this._config.errorClass}_type_${inputElement.name}`);
@@ -53,11 +54,12 @@ export default class FormValidator {
     });
   }
 
-// public section
-
-  constructor(form, config) {
-    this._config = config;
-    this._formElement = form;
+  // disable submit button and hide error messages before opening popup
+  resetValidation() {
+    this._submButton.classList.add(this._config.inactiveButtonClass);
+    this._inputList.forEach(field => {
+      this._hideErrorMsg(field);
+    })
   }
 
   enableValidation() {

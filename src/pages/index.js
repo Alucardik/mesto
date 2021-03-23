@@ -5,7 +5,6 @@ import FormValidator from "../components/FormValidator.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import data from "../utils/constants.js";
-import hideErrorMsg from "../utils/utility.js";
 import "./index.css";
 
 // adding mock gallery to the page
@@ -30,58 +29,45 @@ const profile = new UserInfo({
 
 const editFormPopup = new PopupWithForm("#edit-popup", {
     formName: "profile-info",
-    handleSubm: (evt) => {
-      evt.preventDefault();
-      const formValues = editFormPopup._getInputValues();
-      profile.setUserInfo({ usrName: formValues[0],
-        usrStatus: formValues[1]});
+    handleSubm: (formValues) => {
+      profile.setUserInfo({ usrName: formValues["profile-name"],
+        usrStatus: formValues["profile-description"]});
       editFormPopup.close();
     }
-  },
-  {
-    hideErrorMsg,
-    config: data.config
-  }
-);
+});
 
 const addFormPopup = new PopupWithForm("#add-popup", {
     formName: "add-card",
-    handleSubm: (evt) => {
-      evt.preventDefault();
-      const formValues = addFormPopup._getInputValues();
-      const curItem = {name: formValues[0],
-        link: formValues[1]};
-      const imgPopup = new PopupWithImage("#image-view", curItem);
-      imgPopup.setEventListeners();
+    handleSubm: (formValues) => {
+      const curItem = {name: formValues["card-name"],
+        link: formValues["card-url"]};
       mockGallery.addItem(new Card(curItem, "#gallery-item",
         "gallery", imgPopup.open.bind(imgPopup)).createCard());
       addFormPopup.close();
     }
-  },
-  {
-    hideErrorMsg,
-    config: data.config
-  }
-);
+});
 
 addFormPopup.setEventListeners();
 editFormPopup.setEventListeners();
 
-data.addBtn.addEventListener("click", addFormPopup.open.bind(addFormPopup));
+// enabling form validation
+
+const editFormValidator = new FormValidator(document.querySelector("#edit-popup"), data.config);
+const addFormValidator = new FormValidator(document.querySelector("#add-popup"), data.config);
+editFormValidator.enableValidation();
+addFormValidator.enableValidation();
+
+// adding click events for buttons
+
+data.addBtn.addEventListener("click", () => {
+  addFormValidator.resetValidation();
+  addFormPopup.open();
+});
+
 data.editBtn.addEventListener("click", () => {
   const curInfo = profile.getUserInfo();
+  editFormValidator.resetValidation();
   data.editFormFieldName.value = curInfo.usrName;
   data.editFormFieldDescr.value = curInfo.usrStatus;
   editFormPopup.open();
 });
-
-// enabling form validation using FormValidator class
-
-function enableFormValidation(config) {
-  const formList = Array.from(document.querySelectorAll(`.${config.formSelector}`));
-  formList.forEach(formElement => {
-    new FormValidator(formElement, config).enableValidation();
-  });
-}
-
-enableFormValidation(data.config);
