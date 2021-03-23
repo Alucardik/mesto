@@ -10,14 +10,10 @@ import "./index.css";
 
 // adding mock gallery to the page
 
+const imgPopup = new PopupWithImage("#image-view");
+imgPopup.setEventListeners();
 const mockGallery = new Section({items: data.initialCards,
   renderer: item => {
-    // Right now a new instance of PopupWithImage is created for each gallery item,
-    // though they all refer to one popup with only altering image's src and name.
-    // Maybe there should be only one instance of this class and
-    // "open" method should take parameters instead of constructor?
-    const imgPopup = new PopupWithImage("#image-view", item);
-    imgPopup.setEventListeners();
     mockGallery.addItem(new Card(item, "#gallery-item",
       "gallery", imgPopup.open.bind(imgPopup)).createCard());
   }}, ".gallery" );

@@ -25,7 +25,9 @@ export default class Card {
   }
 
   _addEvListeners() {
-    this._temp.querySelector(`.${this._contPrefix}__image-container`).addEventListener("click", this._imgView);
+    this._temp.querySelector(`.${this._contPrefix}__image-container`).addEventListener("click", () => {
+      this._imgView(this._name, this._link);
+    });
 
     this._temp.querySelector(`.${this._contPrefix}__del-btn`).addEventListener("click", evt =>
       this._delCard(evt));
