@@ -3,8 +3,24 @@
   bottom: 0;
   left: 0;
   width: calc(246 / 282 * 100%);
-  margin: 25px 15px 31px 21px;
+  /*setting min-height equal to like-counter font-size + like-height + margin
+  in order not to suppress like-counter object if its textContent is none*/
+  min-height: 38px;
+  margin: 22px 20px 22px 21px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+@media screen and (max-width: 990px) {
+  .gallery__item-info {
+    /*like button height changed*/
+    min-height: calc(19px * 1.5 + 19px);
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .gallery__item-info {
+    min-height: 38px;
+  }
 }

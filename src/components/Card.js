@@ -7,6 +7,7 @@ export default class Card {
     this._tempSelector = cardTempSelector;
     this._contPrefix = cardTempContentSelPrefix;
     this._imgView = handleCardClick;
+    this._likeCounter = 0;
   }
 
   _createTemp() {
@@ -28,6 +29,14 @@ export default class Card {
 
   _likeCard(evt) {
     evt.target.classList.toggle(`${this._contPrefix}__like-btn_active`);
+    // update like counter
+    (evt.target.classList.contains(`${this._contPrefix}__like-btn_active`)) ?
+      (++this._likeCounter) :
+      (--this._likeCounter);
+    // if like counter equals 0 - hide it
+    (this._likeCounter) ?
+      (this._temp.querySelector(`.${this._contPrefix}__like-counter`).textContent = this._likeCounter) :
+      (this._temp.querySelector(`.${this._contPrefix}__like-counter`).textContent = "");
   }
 
   _addEvListeners() {
