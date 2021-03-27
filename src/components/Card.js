@@ -1,13 +1,14 @@
 export default class Card {
   // passing one prefix for all template elements to constructor
   constructor(cardInfo, cardTempSelector,
-              cardTempContentSelPrefix, handleCardClick) {
+              cardTempContentSelPrefix, handleCardClick, rmConfPopup) {
     this._name = cardInfo.name;
     this._link = cardInfo.link;
     this._tempSelector = cardTempSelector;
     this._contPrefix = cardTempContentSelPrefix;
     this._imgView = handleCardClick;
     this._likeCounter = 0;
+    this._rmPopup = rmConfPopup;
   }
 
   _createTemp() {
@@ -44,8 +45,13 @@ export default class Card {
       this._imgView(this._name, this._link);
     });
 
-    this._temp.querySelector(`.${this._contPrefix}__del-btn`).addEventListener("click", evt =>
-      this._delCard(evt));
+    this._temp.querySelector(`.${this._contPrefix}__del-btn`).addEventListener("click", evt => {
+      this._rmPopup.open();
+      this._rmPopup._popupObj.querySelector(".popup__submit-btn").addEventListener("click", () => {
+        this._rmPopup.close();
+        this._delCard(evt);
+      });
+    });
 
     this._temp.querySelector(`.${this._contPrefix}__like-btn`).addEventListener("click", evt =>
       this._likeCard(evt));

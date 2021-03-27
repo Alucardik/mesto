@@ -2,6 +2,7 @@ import Section from "../components/Section.js";
 import Card from "../components/Card.js";
 import UserInfo from "../components/UserInfo.js";
 import FormValidator from "../components/FormValidator.js";
+import Popup from "../components/Popup.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import data from "../utils/constants.js";
@@ -12,10 +13,13 @@ import "./index.css";
 const imgPopup = new PopupWithImage("#image-view");
 imgPopup.setEventListeners();
 
+const cardRmPopup = new Popup("#conf-removal");
+cardRmPopup.setEventListeners();
+
 const mockGallery = new Section({items: data.initialCards,
   renderer: item => {
     mockGallery.addItem(new Card(item, "#gallery-item",
-      "gallery", imgPopup.open.bind(imgPopup)).createCard());
+      "gallery", imgPopup.open.bind(imgPopup), cardRmPopup).createCard());
   }}, ".gallery" );
 
 mockGallery.renderItems();
