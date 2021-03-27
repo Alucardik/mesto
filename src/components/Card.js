@@ -4,6 +4,7 @@ export default class Card {
               cardTempContentSelPrefix, handleCardClick, rmConfPopup) {
     this._name = cardInfo.name;
     this._link = cardInfo.link;
+    this._owner = cardInfo.owner;
     this._tempSelector = cardTempSelector;
     this._contPrefix = cardTempContentSelPrefix;
     this._imgView = handleCardClick;
@@ -15,6 +16,10 @@ export default class Card {
     this._temp = document.querySelector(this._tempSelector).content.
     querySelector(`.${this._contPrefix}__item`).cloneNode(true);
     this._tempImage = this._temp.querySelector(`.${this._contPrefix}__item-image`);
+    // if card isn't created by current user then he is unable to delete the card
+    if (!this._owner) {
+      this._temp.querySelector(`.${this._contPrefix}__del-btn`).remove();
+    }
   }
 
   _fillInfo() {
@@ -45,13 +50,15 @@ export default class Card {
       this._imgView(this._name, this._link);
     });
 
-    this._temp.querySelector(`.${this._contPrefix}__del-btn`).addEventListener("click", evt => {
-      this._rmPopup.open();
-      this._rmPopup._popupObj.querySelector(".popup__submit-btn").addEventListener("click", () => {
-        this._rmPopup.close();
-        this._delCard(evt);
+    if (this._owner) {
+      this._temp.querySelector(`.${this._contPrefix}__del-btn`).addEventListener("click", evt => {
+        this._rmPopup.open();
+        this._rmPopup._popupObj.querySelector(".popup__submit-btn").addEventListener("click", () => {
+          this._rmPopup.close();
+          this._delCard(evt);
+        });
       });
-    });
+    }
 
     this._temp.querySelector(`.${this._contPrefix}__like-btn`).addEventListener("click", evt =>
       this._likeCard(evt));

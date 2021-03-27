@@ -44,9 +44,10 @@ const addFormPopup = new PopupWithForm("#add-popup", {
     formName: "add-card",
     handleSubm: (formValues) => {
       const curItem = {name: formValues["card-name"],
-        link: formValues["card-url"]};
+        link: formValues["card-url"],
+        owner: true};
       mockGallery.addItem(new Card(curItem, "#gallery-item",
-        "gallery", imgPopup.open.bind(imgPopup)).createCard());
+        "gallery", imgPopup.open.bind(imgPopup), cardRmPopup).createCard());
       addFormPopup.close();
     }
 });
