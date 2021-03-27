@@ -31,6 +31,14 @@ const profile = new UserInfo({
   usrStatusSel: ".profile__description"
 });
 
+const chAvFormPopup = new PopupWithForm("#ch-img-popup", {
+  formName: "avatar-info",
+  handleSubm: (formValues) => {
+    document.querySelector(".profile__img").src = formValues["avatar-url"];
+    chAvFormPopup.close();
+  }
+});
+
 const editFormPopup = new PopupWithForm("#edit-popup", {
     formName: "profile-info",
     handleSubm: (formValues) => {
@@ -52,13 +60,16 @@ const addFormPopup = new PopupWithForm("#add-popup", {
     }
 });
 
+chAvFormPopup.setEventListeners();
 addFormPopup.setEventListeners();
 editFormPopup.setEventListeners();
 
 // enabling form validation
 
+const chAvFormValidator = new FormValidator(document.querySelector("#ch-img-popup"), data.config);
 const editFormValidator = new FormValidator(document.querySelector("#edit-popup"), data.config);
 const addFormValidator = new FormValidator(document.querySelector("#add-popup"), data.config);
+chAvFormValidator.enableValidation();
 editFormValidator.enableValidation();
 addFormValidator.enableValidation();
 
@@ -75,4 +86,9 @@ data.editBtn.addEventListener("click", () => {
   data.editFormFieldName.value = curInfo.usrName;
   data.editFormFieldDescr.value = curInfo.usrStatus;
   editFormPopup.open();
+});
+
+data.avatarBtn.addEventListener("click", () => {
+  chAvFormValidator.resetValidation();
+  chAvFormPopup.open();
 });

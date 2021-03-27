@@ -41,10 +41,11 @@ const config = {
   errorClassActive: 'popup__form-input-error_active'
 };
 
+const avatarBtn = document.querySelector(".profile__btn_type_ch-avatar");
 const editBtn = document.querySelector(".profile__btn_type_edit");
 const addBtn = document.querySelector(".profile__btn_type_add");
 const editFormElement = document.querySelector("#edit-popup .popup__form");
 const editFormFieldName = editFormElement.querySelector(".popup__form-input_type_name");
 const editFormFieldDescr = editFormElement.querySelector(".popup__form-input_type_description");
 
-export default { initialCards, config, editBtn, addBtn, editFormFieldName, editFormFieldDescr };
+export default { initialCards, config, avatarBtn, editBtn, addBtn, editFormFieldName, editFormFieldDescr };
