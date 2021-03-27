@@ -15,7 +15,12 @@
   <main class="content">
     <section class="profile">
       <div class="profile__social">
-        <img src="<%=require('../images/profile__avatar.jpg')%>" alt="Фотография профиля" class="profile__avatar">
+        <div class="profile__avatar">
+          <div class="profile__overlay">
+            <button type="button" class="profile__btn profile__btn_type_ch-avatar"></button>
+          </div>
+          <img src="<%=require('../images/profile__avatar.jpg')%>" alt="Фотография профиля" class="profile__img">
+        </div>
         <div class="profile__info">
           <div class="profile__name-container">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
