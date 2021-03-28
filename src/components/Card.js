@@ -44,16 +44,11 @@ export default class Card {
   _delCard() {
     this._rmPopup.close();
     this._rmFromServe(this._id)
-    .then(res => {
-      if (res.ok) {
-        this._temp.remove();
-        return;
-      }
-
-      return new Promise.reject(res.status);
-    })
     .catch(err => {
       console.log("Error while removing card:", err);
+    })
+    .then(() => {
+      this._temp.remove();
     });
   }
 
@@ -69,13 +64,6 @@ export default class Card {
     // update like counter
     if (evt.target.classList.contains(`${this._contPrefix}__like-btn_active`)) {
       this._addLike(this._id)
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-
-        return new Promise.reject(res.status);
-      })
       .catch(err => {
         console.log("Error while liking card:", err);
       })
@@ -85,13 +73,6 @@ export default class Card {
       });
     } else {
       this._rmLike(this._id)
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-
-          return new Promise.reject(res.status);
-        })
         .catch(err => {
           console.log("Error while liking card:", err);
         })
@@ -100,12 +81,6 @@ export default class Card {
           this._setCounter();
         });
     }
-  }
-
-  _delListenerFunc(btnObj) {
-    // console.log(evt);
-    this._rmPopup.close();
-    this._delCard(btnObj);
   }
 
   _addEvListeners() {
@@ -117,9 +92,6 @@ export default class Card {
       this._temp.querySelector(`.${this._contPrefix}__del-btn`).addEventListener("click", () => {
         this._rmPopup.open();
         this._rmPopup._setCardDelListener(this._delCard.bind(this));
-        // console.log(this._rmPopup._popupObj);
-        // this._rmPopup._popupObj.querySelector(".popup__submit-btn").addEventListener("click",
-        //   this._delListenerFunc.bind(this)(this._temp.querySelector(`.${this._contPrefix}__del-btn`)));
       });
     }
 
