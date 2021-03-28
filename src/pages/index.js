@@ -91,6 +91,7 @@ serverApi.getInitialCards()
 const chAvFormPopup = new PopupWithForm("#ch-img-popup", {
   formName: "avatar-info",
   handleSubm: (formValues) => {
+    chAvFormPopup.formLoading();
     serverApi.updateAvatar(formValues["avatar-url"])
     .then(res => {
       if (res.ok) {
@@ -102,14 +103,18 @@ const chAvFormPopup = new PopupWithForm("#ch-img-popup", {
     })
     .catch(err => {
       console.log("Error while updating avatar image:", err);
-    });
-    chAvFormPopup.close();
+    })
+    .finally(() => {
+      chAvFormPopup.close();
+      chAvFormPopup.formLoaded();
+    })
   }
 });
 
 const editFormPopup = new PopupWithForm("#edit-popup", {
     formName: "profile-info",
     handleSubm: (formValues) => {
+      editFormPopup.formLoading();
       const curInfo = {
         usrName: formValues["profile-name"],
         usrStatus: formValues["profile-description"]
@@ -125,14 +130,18 @@ const editFormPopup = new PopupWithForm("#edit-popup", {
       })
       .catch(err => {
         console.log("Error while updating profile info:", err);
+      })
+      .finally(() => {
+        editFormPopup.close();
+        editFormPopup.formLoaded();
       });
-      editFormPopup.close();
     }
 });
 
 const addFormPopup = new PopupWithForm("#add-popup", {
     formName: "add-card",
     handleSubm: (formValues) => {
+      addFormPopup.formLoading();
       const curItem = {name: formValues["card-name"],
         link: formValues["card-url"],
         likes: 0,
@@ -150,13 +159,16 @@ const addFormPopup = new PopupWithForm("#add-popup", {
         console.log("Error while publishing card", err);
       })
       .then(res => {
-        console.log(res);
         curItem.likes = [];
+        curItem._id = res._id;
         Gallery.addItem(new Card(curItem, "#gallery-item",
           "gallery", imgPopup.open.bind(imgPopup),
           cardRmPopup, cardApi).createCard());
       })
-      addFormPopup.close();
+      .finally(() => {
+        addFormPopup.close();
+        addFormPopup.formLoaded();
+      });
     }
 });
 
