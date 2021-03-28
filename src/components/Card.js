@@ -41,11 +41,12 @@ export default class Card {
     this._setCounter();
   }
 
-  _delCard(evt) {
+  _delCard() {
+    this._rmPopup.close();
     this._rmFromServe(this._id)
     .then(res => {
       if (res.ok) {
-        evt.target.closest(`.${this._contPrefix}__item`).remove();
+        this._temp.remove();
         return;
       }
 
@@ -101,18 +102,24 @@ export default class Card {
     }
   }
 
+  _delListenerFunc(btnObj) {
+    // console.log(evt);
+    this._rmPopup.close();
+    this._delCard(btnObj);
+  }
+
   _addEvListeners() {
     this._temp.querySelector(`.${this._contPrefix}__image-container`).addEventListener("click", () => {
       this._imgView(this._name, this._link);
     });
 
     if (this._owner) {
-      this._temp.querySelector(`.${this._contPrefix}__del-btn`).addEventListener("click", evt => {
+      this._temp.querySelector(`.${this._contPrefix}__del-btn`).addEventListener("click", () => {
         this._rmPopup.open();
-        this._rmPopup._popupObj.querySelector(".popup__submit-btn").addEventListener("click", () => {
-          this._rmPopup.close();
-          this._delCard(evt);
-        });
+        this._rmPopup._setCardDelListener(this._delCard.bind(this));
+        // console.log(this._rmPopup._popupObj);
+        // this._rmPopup._popupObj.querySelector(".popup__submit-btn").addEventListener("click",
+        //   this._delListenerFunc.bind(this)(this._temp.querySelector(`.${this._contPrefix}__del-btn`)));
       });
     }
 
