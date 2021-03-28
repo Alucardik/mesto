@@ -37,7 +37,7 @@ export default class Api {
     });
   }
 
-  updateProfile({usrName, usrStatus}) {
+  updateProfile({ usrName, usrStatus }) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: {
@@ -51,7 +51,6 @@ export default class Api {
     })
     .then(res => {
       if (res.ok) {
-        profile.setUserInfo(curInfo);
         return;
       }
       return new Promise.reject(res.status);
@@ -71,7 +70,6 @@ export default class Api {
     })
     .then(res => {
       if (res.ok) {
-        data.avatarImg.src = formValues["avatar-url"];
         return;
       }
 

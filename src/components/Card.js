@@ -44,11 +44,11 @@ export default class Card {
   _delCard() {
     this._rmPopup.close();
     this._rmFromServe(this._id)
-    .catch(err => {
-      console.log("Error while removing card:", err);
-    })
     .then(() => {
       this._temp.remove();
+    })
+    .catch(err => {
+      console.log("Error while removing card:", err);
     });
   }
 
@@ -64,21 +64,21 @@ export default class Card {
     // update like counter
     if (evt.target.classList.contains(`${this._contPrefix}__like-btn_active`)) {
       this._addLike(this._id)
-      .catch(err => {
-        console.log("Error while liking card:", err);
-      })
       .then(res => {
         this._likes = res.likes.length;
         this._setCounter();
+      })
+      .catch(err => {
+        console.log("Error while liking card:", err);
       });
     } else {
       this._rmLike(this._id)
-        .catch(err => {
-          console.log("Error while liking card:", err);
-        })
         .then(res => {
           this._likes = res.likes.length;
           this._setCounter();
+        })
+        .catch(err => {
+          console.log("Error while liking card:", err);
         });
     }
   }

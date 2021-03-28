@@ -9,6 +9,12 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import data from "../utils/constants.js";
 import "./index.css";
 
+function createCard(cardInfo) {
+  return new Card(cardInfo, "#gallery-item",
+    "gallery", imgPopup.open.bind(imgPopup),
+    cardRmPopup, cardApi).createCard();
+}
+
 // initialising server API
 const serverApi = new Api(data.serverAutData);
 
@@ -20,28 +26,17 @@ const cardApi = {
 
 const profile = new UserInfo({
   usrNameSel: ".profile__name",
-  usrStatusSel: ".profile__description"
+  usrStatusSel: ".profile__description",
+  usrAvatarSel: ".profile__img"
 });
-
-// Profile
 
 // hide userInfo until getting a response from server
 
-profile.setUserInfo({usrName: "...",
-  usrStatus: "..."});
-
-serverApi.getProfileInfo()
-  .catch(err => {
-    console.log("Error while loading profile data:", err);
-  })
-  .then(res => {
-    serverApi.id = res._id;
-    data.avatarImg.src = res.avatar;
-    profile.setUserInfo({usrName: res.name,
-                         usrStatus: res.about});
-  });
-
-// Gallery
+profile.setUserInfo({
+  usrName: "...",
+  usrStatus: "...",
+  usrAvatar: data.avatarLoading
+});
 
 const imgPopup = new PopupWithImage("#image-view");
 imgPopup.setEventListeners();
@@ -49,41 +44,48 @@ imgPopup.setEventListeners();
 const cardRmPopup = new PopupWithConfirm("#conf-removal");
 cardRmPopup.setEventListeners();
 
-const Gallery = new Section({items: [],
+const gallery = new Section({items: [],
   renderer: item => {
-    Gallery.addItem(new Card(item, "#gallery-item",
-      "gallery", imgPopup.open.bind(imgPopup),
-      cardRmPopup, cardApi).createCard());
+    gallery.addItem(createCard(item));
   }}, ".gallery");
 
-serverApi.getInitialCards()
-  .catch(err => {
-    console.log("Error while loading images:", err);
-  })
-  .then(res => {
-    res.forEach(item => {
+const profilePromise =  serverApi.getProfileInfo();
+
+const cardsPromise = serverApi.getInitialCards();
+
+Promise.all([profilePromise, cardsPromise])
+  .then(results => {
+    serverApi.id = results[0]._id;
+    profile.setUserInfo({
+      usrName: results[0].name,
+      usrStatus: results[0].about,
+      usrAvatar: results[0].avatar
+    });
+    results[1].forEach(item => {
       item.owner = (item.owner._id === serverApi.id);
       item.liked = item.likes.some(curLike => {
         return curLike._id === serverApi.id;
-      })
-      Gallery.addItem(new Card(item, "#gallery-item",
-        "gallery", imgPopup.open.bind(imgPopup),
-        cardRmPopup, cardApi).createCard())
+      });
+      gallery.addItem(createCard(item));
     });
+  })
+  .catch(errs => {
+    console.log("Errors encountered:", errs);
   });
-
-// setting up form popups
 
 const chAvFormPopup = new PopupWithForm("#ch-img-popup", {
   formName: "avatar-info",
   handleSubm: (formValues) => {
     chAvFormPopup.formLoading();
     serverApi.updateAvatar(formValues["avatar-url"])
+    .then(() => {
+      data.avatarImg.src = formValues["avatar-url"];
+      chAvFormPopup.close();
+    })
     .catch(err => {
       console.log("Error while updating avatar image:", err);
     })
     .finally(() => {
-      chAvFormPopup.close();
       chAvFormPopup.formLoaded();
     })
   }
@@ -95,15 +97,19 @@ const editFormPopup = new PopupWithForm("#edit-popup", {
       editFormPopup.formLoading();
       const curInfo = {
         usrName: formValues["profile-name"],
-        usrStatus: formValues["profile-description"]
+        usrStatus: formValues["profile-description"],
+        usrAvatar: profile.getUserInfo().usrAvatar.src
       };
 
       serverApi.updateProfile(curInfo)
+      .then(() => {
+        profile.setUserInfo(curInfo);
+        editFormPopup.close();
+      })
       .catch(err => {
         console.log("Error while updating profile info:", err);
       })
       .finally(() => {
-        editFormPopup.close();
         editFormPopup.formLoaded();
       });
     }
@@ -119,18 +125,16 @@ const addFormPopup = new PopupWithForm("#add-popup", {
         owner: true,
         liked: false};
       serverApi.publishCard(curItem)
-      .catch(err => {
-        console.log("Error while publishing card", err);
-      })
       .then(res => {
         curItem.likes = [];
         curItem._id = res._id;
-        Gallery.addItem(new Card(curItem, "#gallery-item",
-          "gallery", imgPopup.open.bind(imgPopup),
-          cardRmPopup, cardApi).createCard());
+        gallery.addItem(createCard(curItem));
+        addFormPopup.close();
+      })
+      .catch(err => {
+        console.log("Error while publishing card", err);
       })
       .finally(() => {
-        addFormPopup.close();
         addFormPopup.formLoaded();
       });
     }

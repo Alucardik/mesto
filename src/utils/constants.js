@@ -1,3 +1,5 @@
+import * as URL from "url";
+
 const serverAutData = {
   baseUrl: "https://mesto.nomoreparties.co/v1/",
   token: "05d1c1fe-0e46-4725-9fcb-d2c6981b18f1",
@@ -21,5 +23,7 @@ const addBtn = document.querySelector(".profile__btn_type_add");
 const editFormElement = document.querySelector("#edit-popup .popup__form");
 const editFormFieldName = editFormElement.querySelector(".popup__form-input_type_name");
 const editFormFieldDescr = editFormElement.querySelector(".popup__form-input_type_description");
+const avatarLoading = new URL("../images/avatar-loading.png", import.meta.url);
 
-export default { serverAutData, config, avatarImg, avatarBtn, editBtn, addBtn, editFormFieldName, editFormFieldDescr };
+export default { serverAutData, config, avatarImg, avatarBtn, editBtn,
+  addBtn, editFormFieldName, editFormFieldDescr, avatarLoading };
