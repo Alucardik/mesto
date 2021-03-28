@@ -3,7 +3,7 @@ import Section from "../components/Section.js";
 import Card from "../components/Card.js";
 import UserInfo from "../components/UserInfo.js";
 import FormValidator from "../components/FormValidator.js";
-import Popup from "../components/Popup.js";
+import PopupWithConfirm from "../components/PopupWithConfirm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import data from "../utils/constants.js";
@@ -31,13 +31,6 @@ profile.setUserInfo({usrName: "...",
   usrStatus: "..."});
 
 serverApi.getProfileInfo()
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-
-    return new Promise.reject(res.status);
-  })
   .catch(err => {
     console.log("Error while loading profile data:", err);
   })
@@ -53,7 +46,7 @@ serverApi.getProfileInfo()
 const imgPopup = new PopupWithImage("#image-view");
 imgPopup.setEventListeners();
 
-const cardRmPopup = new Popup("#conf-removal");
+const cardRmPopup = new PopupWithConfirm("#conf-removal");
 cardRmPopup.setEventListeners();
 
 const Gallery = new Section({items: [],
@@ -64,13 +57,6 @@ const Gallery = new Section({items: [],
   }}, ".gallery");
 
 serverApi.getInitialCards()
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-
-    return Promise.reject(res.status);
-  })
   .catch(err => {
     console.log("Error while loading images:", err);
   })
@@ -93,14 +79,6 @@ const chAvFormPopup = new PopupWithForm("#ch-img-popup", {
   handleSubm: (formValues) => {
     chAvFormPopup.formLoading();
     serverApi.updateAvatar(formValues["avatar-url"])
-    .then(res => {
-      if (res.ok) {
-        data.avatarImg.src = formValues["avatar-url"];
-        return;
-      }
-
-      return new Promise.reject(res.status);
-    })
     .catch(err => {
       console.log("Error while updating avatar image:", err);
     })
@@ -121,13 +99,6 @@ const editFormPopup = new PopupWithForm("#edit-popup", {
       };
 
       serverApi.updateProfile(curInfo)
-      .then(res => {
-        if (res.ok) {
-          profile.setUserInfo(curInfo);
-          return;
-        }
-        return new Promise.reject(res.status);
-      })
       .catch(err => {
         console.log("Error while updating profile info:", err);
       })
@@ -148,13 +119,6 @@ const addFormPopup = new PopupWithForm("#add-popup", {
         owner: true,
         liked: false};
       serverApi.publishCard(curItem)
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-
-        return new Promise.reject(res.status);
-      })
       .catch(err => {
         console.log("Error while publishing card", err);
       })

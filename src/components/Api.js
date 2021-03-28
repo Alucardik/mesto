@@ -1,3 +1,5 @@
+import data from "../utils/constants";
+
 export default class Api {
   constructor({baseUrl, token, groupId}) {
     this._token = token;
@@ -10,6 +12,13 @@ export default class Api {
       headers: {
         authorization: this._token
       }
+    })
+    .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+
+        return Promise.reject(res.status);
     });
   }
 
@@ -18,6 +27,13 @@ export default class Api {
       headers: {
         authorization: this._token
       }
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+
+      return new Promise.reject(res.status);
     });
   }
 
@@ -32,6 +48,13 @@ export default class Api {
         name: usrName,
         about: usrStatus
       })
+    })
+    .then(res => {
+      if (res.ok) {
+        profile.setUserInfo(curInfo);
+        return;
+      }
+      return new Promise.reject(res.status);
     });
   }
 
@@ -45,6 +68,14 @@ export default class Api {
       body: JSON.stringify({
         avatar: url
       })
+    })
+    .then(res => {
+      if (res.ok) {
+        data.avatarImg.src = formValues["avatar-url"];
+        return;
+      }
+
+      return new Promise.reject(res.status);
     });
   }
 
@@ -59,6 +90,13 @@ export default class Api {
         name: name,
         link: link
       })
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+
+      return new Promise.reject(res.status);
     });
   }
 
@@ -69,6 +107,13 @@ export default class Api {
         authorization: this._token
       }
     })
+    .then(res => {
+      if (res.ok) {
+        return;
+      }
+
+      return new Promise.reject(res.status);
+    });
   }
 
   addLike(id) {
@@ -78,6 +123,13 @@ export default class Api {
         authorization: this._token
       }
     })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+
+      return new Promise.reject(res.status);
+    });
   }
 
   rmLike(id) {
@@ -87,5 +139,12 @@ export default class Api {
         authorization: this._token
       }
     })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+
+      return new Promise.reject(res.status);
+    });
   }
 }
