@@ -1,18 +1,31 @@
 export default class Card {
   // passing one prefix for all template elements to constructor
   constructor(cardInfo, cardTempSelector,
-              cardTempContentSelPrefix, handleCardClick) {
+              cardTempContentSelPrefix, handleCardClick, rmConfPopup, servMethods) {
     this._name = cardInfo.name;
     this._link = cardInfo.link;
+    this._likes = cardInfo.likes.length;
+    this._isLiked = cardInfo.liked;
+    this._owner = cardInfo.owner;
     this._tempSelector = cardTempSelector;
     this._contPrefix = cardTempContentSelPrefix;
     this._imgView = handleCardClick;
+    this._rmPopup = rmConfPopup;
+    this._id = cardInfo._id;
+    this._rmFromServe = servMethods.delCard;
+    this._addLike = servMethods.addLike;
+    this._rmLike = servMethods.rmLike;
   }
 
   _createTemp() {
     this._temp = document.querySelector(this._tempSelector).content.
     querySelector(`.${this._contPrefix}__item`).cloneNode(true);
     this._tempImage = this._temp.querySelector(`.${this._contPrefix}__item-image`);
+    this._likeCounter = this._temp.querySelector(`.${this._contPrefix}__like-counter`);
+    // if card isn't created by current user then he is unable to delete the card
+    if (!this._owner) {
+      this._temp.querySelector(`.${this._contPrefix}__del-btn`).remove();
+    }
   }
 
   _fillInfo() {
@@ -20,14 +33,72 @@ export default class Card {
     this._tempImage.src = this._link;
     this._tempImage.alt = this._name;
     this._temp.querySelector(`.${this._contPrefix}__item-name`).textContent = this._name;
+    // set like button active if you have previously liked this card
+    if (this._isLiked) {
+      this._temp.querySelector(`.${this._contPrefix}__like-btn`).
+      classList.add(`${this._contPrefix}__like-btn_active`);
+    }
+    this._setCounter();
   }
 
   _delCard(evt) {
-    evt.target.closest(`.${this._contPrefix}__item`).remove();
+    this._rmFromServe(this._id)
+    .then(res => {
+      if (res.ok) {
+        evt.target.closest(`.${this._contPrefix}__item`).remove();
+        return;
+      }
+
+      return new Promise.reject(res.status);
+    })
+    .catch(err => {
+      console.log("Error while removing card:", err);
+    });
+  }
+
+  // if like counter equals 0 - hide it
+  _setCounter() {
+    (this._likes) ?
+      (this._likeCounter.textContent = this._likes) :
+      (this._likeCounter.textContent = "");
   }
 
   _likeCard(evt) {
     evt.target.classList.toggle(`${this._contPrefix}__like-btn_active`);
+    // update like counter
+    if (evt.target.classList.contains(`${this._contPrefix}__like-btn_active`)) {
+      this._addLike(this._id)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+
+        return new Promise.reject(res.status);
+      })
+      .catch(err => {
+        console.log("Error while liking card:", err);
+      })
+      .then(res => {
+        this._likes = res.likes.length;
+        this._setCounter();
+      });
+    } else {
+      this._rmLike(this._id)
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+
+          return new Promise.reject(res.status);
+        })
+        .catch(err => {
+          console.log("Error while liking card:", err);
+        })
+        .then(res => {
+          this._likes = res.likes.length;
+          this._setCounter();
+        });
+    }
   }
 
   _addEvListeners() {
@@ -35,8 +106,15 @@ export default class Card {
       this._imgView(this._name, this._link);
     });
 
-    this._temp.querySelector(`.${this._contPrefix}__del-btn`).addEventListener("click", evt =>
-      this._delCard(evt));
+    if (this._owner) {
+      this._temp.querySelector(`.${this._contPrefix}__del-btn`).addEventListener("click", evt => {
+        this._rmPopup.open();
+        this._rmPopup._popupObj.querySelector(".popup__submit-btn").addEventListener("click", () => {
+          this._rmPopup.close();
+          this._delCard(evt);
+        });
+      });
+    }
 
     this._temp.querySelector(`.${this._contPrefix}__like-btn`).addEventListener("click", evt =>
       this._likeCard(evt));

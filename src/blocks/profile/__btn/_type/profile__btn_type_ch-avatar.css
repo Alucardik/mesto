@@ -1,0 +1,16 @@
+.profile__btn_type_ch-avatar {
+  visibility: inherit;
+  opacity: inherit;
+  min-width: 26px;
+  height: 26px;
+  background: url(../../../../images/change-avatar.svg);
+  transition: all .02s ease-in;
+}
+
+@media screen and (max-width: 570px) {
+  .profile__btn_type_edit {
+    min-width: 20px;
+    height: 20px;
+    background-size: 20px 20px;
+  }
+}

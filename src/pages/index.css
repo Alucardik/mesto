@@ -11,6 +11,8 @@
 @import url(../blocks/profile/profile.css);
 @import url(../blocks/profile/__social/profile__social.css);
 @import url(../blocks/profile/__avatar/profile__avatar.css);
+@import url(../blocks/profile/__overlay/profile__overlay.css);
+@import url(../blocks/profile/__img/profile__img.css);
 @import url(../blocks/profile/__info/profile__info.css);
 @import url(../blocks/profile/__name-container/profile__name-container.css);
 @import url(../blocks/profile/__name/profile__name.css);
@@ -18,6 +20,7 @@
 @import url(../blocks/profile/__btn/profile__btn.css);
 @import url(../blocks/profile/__btn/_type/profile__btn_type_add.css);
 @import url(../blocks/profile/__btn/_type/profile__btn_type_edit.css);
+@import url(../blocks/profile/__btn/_type/profile__btn_type_ch-avatar.css);
 
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
@@ -38,9 +41,11 @@
 @import url(../blocks/popup/__form-input-error/_type/popup__form-input-error_type_profile-description.css);
 @import url(../blocks/popup/__form-input-error/_type/popup__form-input-error_type_card-name.css);
 @import url(../blocks/popup/__form-input-error/_type/popup__form-input-error_type_card-url.css);
+@import url(../blocks/popup/__form-input-error/_type/popup__form-input-error_type_avatar-url.css);
 @import url(../blocks/popup/__form-input/_type/popup__form-input_type_name.css);
 @import url(../blocks/popup/__form-input/_type/popup__form-input_type_description.css);
 @import url(../blocks/popup/__submit-btn/popup__submit-btn.css);
+@import url(../blocks/popup/__submit-btn/_type/popup__submit-btn_type_conf-rm.css);
 @import url(../blocks/popup/__submit-btn/_inactive/popup__submit-btn_inactive.css);
 
 @import url(../blocks/gallery/gallery.css);
@@ -50,6 +55,8 @@
 @import url(../blocks/gallery/__item-image/gallery__image.css);
 @import url(../blocks/gallery/__item-info/gallery__info.css);
 @import url(../blocks/gallery/__item-name/gallery__item-name.css);
+@import url(../blocks/gallery/__like-group/gallery__like_group.css);
+@import url(../blocks/gallery/__like-counter/gallery__like-counter.css);
 @import url(../blocks/gallery/__like-btn/gallery__like-btn.css);
 @import url(../blocks/gallery/__del-btn/gallery__del-btn.css);
 @import url(../blocks/gallery/__like-btn/_active/gallery__like-btn_active.css);
